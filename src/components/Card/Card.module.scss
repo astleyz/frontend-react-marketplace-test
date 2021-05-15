@@ -1,0 +1,65 @@
+.card {
+  max-height: 250px;
+  display: flex;
+  flex-direction: row;
+
+  .content {
+    width: 100%;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 5px 0;
+    padding-left: 1.4rem;
+
+    .title {
+      text-overflow: ellipsis;
+      white-space: normal;
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.02rem;
+      font-size: 1.3rem;
+      margin: 0;
+    }
+
+    .description,
+    .author,
+    .length {
+      font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto, segoe ui, Helvetica,
+        Arial, sans-serif, apple color emoji, segoe ui emoji, segoe ui symbol;
+      font-weight: 400;
+      line-height: 1.4;
+      font-size: 1.1rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .author,
+    .length {
+      display: block;
+      color: #6a6f73;
+    }
+
+    .author {
+      opacity: 0.8;
+    }
+  }
+
+  .cardAction {
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: flex-end !important;
+
+    a {
+      margin-right: 0px !important;
+      color: #ffab40;
+      margin-right: 24px;
+      transition: color 0.3s ease;
+      text-transform: uppercase;
+    }
+  }
+}
+
+.img {
+  width: 250px;
+  height: 165px;
+}

@@ -1,0 +1,23 @@
+.root {
+  > * + * {
+    margin-top: 2rem;
+  }
+  margin-bottom: 3rem;
+
+  .breadcrumbs {
+    display: flex;
+    background-color: lighten(#4db6ac, 15%);
+    height: 3rem;
+    align-items: center;
+    padding-left: 1rem !important;
+
+    li > * {
+      color: #fff !important;
+    }
+
+    li > p {
+      color: #fff !important;
+      opacity: 0.7;
+    }
+  }
+}

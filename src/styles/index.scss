@@ -1,0 +1,8 @@
+@import 'nullstyle.scss';
+@import '~materialize-css/dist/css/materialize.min.css';
+
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
