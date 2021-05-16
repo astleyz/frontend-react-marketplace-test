@@ -1,4 +1,7 @@
 import React, { FC } from 'react';
+import FacebookIcon from '@material-ui/icons/Facebook';
+import TwitterIcon from '@material-ui/icons/Twitter';
+import LinkedInIcon from '@material-ui/icons/LinkedIn';
 
 const Footer: FC = () => {
   return (
@@ -6,33 +9,23 @@ const Footer: FC = () => {
       <div className="container">
         <div className="row">
           <div className="col l6 s12">
-            <h5 className="white-text">Footer Content</h5>
+            <h5 className="white-text">Sharing Of Information</h5>
             <p className="grey-text text-lighten-4">
-              You can use rows and columns here to organize your footer content.
+              We have no control over the privacy practices of websites or applications that we do
+              not own..
             </p>
           </div>
           <div className="col l4 offset-l2 s12">
-            <h5 className="white-text">Links</h5>
-            <ul>
-              <li>
-                <a className="grey-text text-lighten-3" href="#!">
-                  Link 1
-                </a>
+            <h5 className="white-text">Contact Us</h5>
+            <ul style={{ display: 'flex' }}>
+              <li style={{ marginRight: '10px', cursor: 'pointer' }}>
+                <FacebookIcon fontSize="large" />
               </li>
-              <li>
-                <a className="grey-text text-lighten-3" href="#!">
-                  Link 2
-                </a>
+              <li style={{ marginRight: '10px', cursor: 'pointer' }}>
+                <TwitterIcon fontSize="large" />
               </li>
-              <li>
-                <a className="grey-text text-lighten-3" href="#!">
-                  Link 3
-                </a>
-              </li>
-              <li>
-                <a className="grey-text text-lighten-3" href="#!">
-                  Link 4
-                </a>
+              <li style={{ marginRight: '10px', cursor: 'pointer' }}>
+                <LinkedInIcon fontSize="large" />
               </li>
             </ul>
           </div>
@@ -40,9 +33,9 @@ const Footer: FC = () => {
       </div>
       <div className="footer-copyright">
         <div className="container">
-          © 2021 Copyright Text
+          © 2021 Copyright, All Rights Reserved
           <a className="grey-text text-lighten-4 right" href="#!">
-            More Links
+            Privacy
           </a>
         </div>
       </div>

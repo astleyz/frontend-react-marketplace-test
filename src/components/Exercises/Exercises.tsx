@@ -66,6 +66,7 @@ const Exercises = () => {
     <>
       {titles.map((it, idx) => (
         <Accordion
+          key={`${it.title}${idx}`}
           square
           expanded={expanded === `${it.title}${idx}`}
           onChange={handleChange(`${it.title}${idx}`)}
@@ -78,7 +79,7 @@ const Exercises = () => {
               {it.description}
               &nbsp;&nbsp;&nbsp;
               <span>
-                <Link to={`/:id/lesson${idx}`}>[подробнее]</Link>
+                <Link to={`/courses/:id/lesson${idx}`}>[подробнее]</Link>
               </span>
             </Typography>
           </AccordionDetails>

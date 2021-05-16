@@ -25,7 +25,7 @@ const Card: FC = () => {
             <span className={style.length}>Всего 5,5 ч. 24 уроков</span>
           </div>
           <div className={cx('card-action', style.cardAction)}>
-            <Link to="/goland">Открыть</Link>
+            <Link to="/courses/goland">Открыть</Link>
           </div>
         </div>
       </div>

@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { FC } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import InputBase from '@material-ui/core/InputBase';
@@ -6,6 +7,9 @@ import SearchIcon from '@material-ui/icons/Search';
 import cx from 'classnames';
 import styles from './Header.module.scss';
 import { Link } from 'react-router-dom';
+import Authorization from '../Auth/Authorization';
+import Registration from '../Auth/Registration';
+import { useDispatch } from 'react-redux';
 
 const useStyles = makeStyles(theme => ({
   input: {
@@ -23,6 +27,15 @@ const useStyles = makeStyles(theme => ({
 
 const Header: FC = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+
+  const [isAuthOpen, setAuthOpen] = React.useState(false);
+  const [isRegisterOpen, setRegisterOpen] = React.useState(false);
+
+  const handleAuthOpen = () => setAuthOpen(true);
+  const handleAuthClose = () => setAuthOpen(false);
+  const handleRegisterOpen = () => setRegisterOpen(true);
+  const handleRegisterClose = () => setRegisterOpen(false);
 
   return (
     <header className="header">
@@ -39,12 +52,14 @@ const Header: FC = () => {
           </div>
           <ul className="right">
             <li>
-              <a href="badges.html">Войти</a>
+              <a onClick={handleAuthOpen}>Войти</a>
             </li>
             <li>
-              <a href="collapsible.html">Регистрация</a>
+              <a onClick={handleRegisterOpen}>Регистрация</a>
             </li>
           </ul>
+          <Authorization isOpen={isAuthOpen} onClose={handleAuthClose} dispatch={dispatch} />
+          <Registration isOpen={isRegisterOpen} onClose={handleRegisterClose} dispatch={dispatch} />
         </div>
       </nav>
     </header>
