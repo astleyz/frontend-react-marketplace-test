@@ -1,8 +1,8 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Header from './components/Header/Header';
 import Breadcrumbs from './components/Breadcrumbs/Breadcrumbs';
 import Card from './components/Card/Card';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Footer from './components/Footer/Footer';
 import Snackbar from './components/Snackbar/Snackbar';
 import CoursePage from './pages/CoursePage';

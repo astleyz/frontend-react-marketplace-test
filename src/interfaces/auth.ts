@@ -10,3 +10,7 @@ export interface ILoginProps {
   password: string;
   rememberme: boolean;
 }
+
+export interface AuthResponse {
+  token: string;
+}

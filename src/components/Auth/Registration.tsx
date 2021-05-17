@@ -11,7 +11,7 @@ import styles from '../../styles/vars.module.scss';
 import teal from '@material-ui/core/colors/teal';
 import { Form, Field, ErrorMessage, withFormik, FormikProps, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
-import { IRegisterProps as IRegister } from '../../interfaces/IAuth';
+import { IRegisterProps as IRegister } from '../../interfaces/auth';
 import { Dispatch } from 'redux';
 import { registration } from '../../store/actions';
 

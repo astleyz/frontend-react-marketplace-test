@@ -1,3 +1,9 @@
 export const SET_SNACKBAR = 'SET_SNACKBAR';
+
 export const REQUEST_LOGIN = 'REQUEST_LOGIN';
 export const REQUEST_REGISTRATION = 'REQUEST_REGISTRATION';
+export const SET_TOKEN = 'SET_TOKEN';
+export const CLEAR_TOKEN = 'CLEAR_TOKEN';
+
+export const SET_USER_DATA = 'SET_USER_DATA';
+export const SET_FULL_NAME = 'SET_FULL_NAME';

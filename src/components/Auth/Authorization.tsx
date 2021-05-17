@@ -10,7 +10,7 @@ import styles from '../../styles/vars.module.scss';
 import { Form, Field, withFormik, FormikProps, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import teal from '@material-ui/core/colors/teal';
-import { ILoginProps } from '../../interfaces/IAuth';
+import { ILoginProps } from '../../interfaces/auth';
 import TealCheckbox from '../../hocs/Checkbox';
 import { Dispatch } from 'redux';
 import { authorization } from '../../store/actions';

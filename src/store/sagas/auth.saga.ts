@@ -1,29 +1,42 @@
-import { put, call } from 'redux-saga/effects';
+import { put, call, delay } from 'redux-saga/effects';
 import { SagaIterator } from 'redux-saga';
 import { api } from '../../api';
-import { AuthorizationAction, setSnackbar, RegistrationAction } from '../actions';
+import {
+  AuthorizationAction,
+  setSnackbar,
+  RegistrationAction,
+  setToken,
+  saveUserFetchedData,
+} from '../actions';
 
 export function* authorizationWorker({ data, formik }: AuthorizationAction): SagaIterator {
   try {
-    yield call(api.auth.login, data);
+    const response = yield call(api.auth.login, data);
+    yield put(setToken(response.data.token));
+    yield put(saveUserFetchedData(response.data.user));
     formik.setSubmitting(false);
     formik.resetForm();
-    setTimeout(() => formik.props.onClose(), 100);
+    yield delay(100);
+    formik.props.onClose();
   } catch (e) {
+    const errText = e.response?.data?.message || e.message || 'Client Error';
     formik.setSubmitting(false);
-    yield put(setSnackbar(true, 'error', e.response.data.message, 5000));
+    yield put(setSnackbar(true, 'error', errText, 5000));
   }
 }
 
 export function* registrationWorker({ data, formik }: RegistrationAction): SagaIterator {
   try {
-    yield call(api.auth.register, data);
+    const response = yield call(api.auth.register, data);
+    yield put(setToken(response.data.token));
+    yield put(saveUserFetchedData(response.data.user));
     formik.setSubmitting(false);
     formik.resetForm();
-    setTimeout(() => formik.props.onClose(), 200);
-    yield put(setSnackbar(true, 'success', 'Успешно зарегистрирован'));
+    yield delay(200);
+    formik.props.onClose();
   } catch (e) {
+    const errText = e.response?.data?.message || e.message || 'Client Error';
     formik.setSubmitting(false);
-    yield put(setSnackbar(true, 'error', e.response.data.message, 5000));
+    yield put(setSnackbar(true, 'error', errText, 5000));
   }
 }

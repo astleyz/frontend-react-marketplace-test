@@ -1,8 +1,9 @@
-import { REQUEST_REGISTRATION, REQUEST_LOGIN } from '../types';
-import { IRegisterProps, ILoginProps } from '../../interfaces/IAuth';
+import { REQUEST_REGISTRATION, REQUEST_LOGIN, SET_TOKEN, CLEAR_TOKEN } from '../types';
+import { IRegisterProps, ILoginProps } from '../../interfaces/auth';
 import { IFormik as IAuthorizeFormik } from '../../components/Auth/Authorization';
 import { IFormik as IRegisterFormik } from '../../components/Auth/Registration';
 
+// Types
 export type AuthorizationAction = {
   type: typeof REQUEST_LOGIN;
   data: ILoginProps;
@@ -15,6 +16,10 @@ export type RegistrationAction = {
   formik: IRegisterFormik;
 };
 
+export type setTokenAction = { type: typeof SET_TOKEN; payload: string };
+export type clearTokenAction = { type: typeof CLEAR_TOKEN };
+
+// Actions
 export const authorization = (
   data: ILoginProps,
   formik: IAuthorizeFormik
@@ -32,3 +37,6 @@ export const registration = (
   data,
   formik,
 });
+
+export const setToken = (payload: string): setTokenAction => ({ type: SET_TOKEN, payload });
+export const clearToken = (): clearTokenAction => ({ type: CLEAR_TOKEN });

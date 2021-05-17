@@ -1,3 +1,5 @@
+@import '../../styles/vars.module.scss';
+
 .navWrapper {
   display: flex !important;
   flex-direction: row !important;
@@ -10,26 +12,48 @@
     cursor: pointer;
   }
 
-  .searchBox {
-    flex-grow: 1;
+  .userBlock {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    align-items: center;
+    padding: 15px 0;
+    padding-right: 2rem;
 
-    .input {
-      max-width: 70%;
-      color: #fff;
-      > input {
-        border-bottom: 1px solid grey;
+    .imgBox {
+      height: 100%;
+      width: 34px;
+      margin-right: 1rem;
+      background-color: orange;
+      font-size: 23px;
+      font-weight: bold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
 
-        &:focus {
-          box-shadow: 0 1px 0 0 #fff !important;
-        }
+      img {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
       }
     }
 
-    .searchButton {
-      background-color: transparent !important;
+    .name {
+      font-size: 14px;
+      -webkit-text-stroke: 0.1px gold;
+      -webkit-text-fill-color: yellow;
+      cursor: pointer;
+    }
+  }
+
+  .exit {
+    a {
+      display: flex;
+      align-items: center;
+
+      .exitText {
+        margin-left: 4px;
+      }
     }
   }
 }
