@@ -6,7 +6,7 @@ import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import { makeStyles } from '@material-ui/core/styles';
 import styles from './Search.module.scss';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAuthStatus } from '../../store/selectors';
+import { getAuthStatus, getIsFetchingSpinner } from '../../store/selectors';
 import Loader from '../Loader/Loader';
 import { addCourse } from '../../store/actions';
 
@@ -15,13 +15,16 @@ const useStyles = makeStyles(theme => ({
     marginLeft: theme.spacing(1),
     flex: 1,
   },
+  tooltip: {
+    fontSize: '11px',
+  },
 }));
 
 const Search: FC = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const isAuthorized = useSelector(getAuthStatus);
-  const isLoading = useSelector(() => true);
+  const isLoading = useSelector(getIsFetchingSpinner);
   const [inputState, setInputState] = useState('');
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputState(e.target.value);
@@ -35,28 +38,31 @@ const Search: FC = () => {
     <div className={styles.searchBox}>
       {isAuthorized ? (
         <Tooltip
-          classes={{ tooltip: styles.tooltip }}
+          classes={{ tooltip: classes.tooltip }}
           arrow
           TransitionComponent={Zoom}
           title="Вставьте ссылку на любой курс с Udemy"
         >
           <InputBase
             className={cx(classes.input, styles.input)}
+            spellCheck="false"
             value={inputState}
             onChange={handleInputChange}
           />
         </Tooltip>
       ) : (
-        <InputBase className={cx(classes.input, styles.input)} />
+        <InputBase className={cx(classes.input, styles.input)} spellCheck="false" />
       )}
 
-      <IconButton classes={{ root: styles.searchButton }}>
-        {isAuthorized ? (
-          <CheckCircleOutlineIcon fontSize="large" color="primary" onClick={handleAddCourse} />
-        ) : (
+      {isAuthorized ? (
+        <IconButton classes={{ root: styles.searchButton }} onClick={handleAddCourse}>
+          <CheckCircleOutlineIcon fontSize="large" color="primary" />
+        </IconButton>
+      ) : (
+        <IconButton classes={{ root: styles.searchButton }}>
           <SearchIcon />
-        )}
-      </IconButton>
+        </IconButton>
+      )}
       {isLoading ? <Loader /> : null}
     </div>
   );

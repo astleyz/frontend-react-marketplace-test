@@ -5,10 +5,9 @@ export const REQUEST_REGISTRATION = 'REQUEST_REGISTRATION';
 export const SET_TOKEN = 'SET_TOKEN';
 export const CLEAR_TOKEN = 'CLEAR_TOKEN';
 
-export const SET_USER_DATA = 'SET_USER_DATA';
 export const SET_FULL_NAME = 'SET_FULL_NAME';
 
-export const ADD_COURSE = 'SET_FULL_NAME';
+export const ADD_COURSE = 'ADD_COURSE';
 export const REMOVE_COURSE = 'REMOVE_COURSE_IN_USER';
 export const EDIT_COURSE = 'EDIT_COURSE';
 export const SAVE_COURSES = 'SAVE_COURSES';

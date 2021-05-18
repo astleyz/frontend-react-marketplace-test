@@ -5,12 +5,13 @@ import rootSaga from './rootSaga';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 const saga = createSagaMiddleware();
+const composeEnhancers = composeWithDevTools({ trace: true, traceLimit: 25 });
 
 const store = createStore(
   rootReducer,
-  process.env.NODE_ENV === 'production'
-    ? applyMiddleware(saga)
-    : composeWithDevTools(applyMiddleware(saga))
+  process.env.NODE_ENV === 'development'
+    ? composeEnhancers(applyMiddleware(saga))
+    : applyMiddleware(saga)
 );
 
 saga.run(rootSaga);

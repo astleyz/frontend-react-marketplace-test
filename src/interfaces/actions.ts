@@ -11,13 +11,9 @@ export type ActionTypes =
   | auth.setTokenAction
   | auth.clearTokenAction;
 
-export type UserActionTypes =
-  | user.saveUserFetchedDataAction
-  | user.saveUserFullNameAction
-  | auth.clearTokenAction;
+export type UserActionTypes = user.saveUserFullNameAction | auth.clearTokenAction;
 
 export type CourseActionTypes =
-  | course.addCourseAction
   | course.removeCourseAction
   | course.editCourseAction
   | course.saveCoursesAction
@@ -28,4 +24,5 @@ export type RequestSpinnerActionTypes =
   | ReturnType<typeof spinner.stopFetching>
   | ReturnType<typeof spinner.fillFetched>
   | ReturnType<typeof spinner.setFetchingError>
-  | ReturnType<typeof spinner.resetRequestSpinner>;
+  | ReturnType<typeof spinner.resetRequestSpinner>
+  | auth.clearTokenAction;

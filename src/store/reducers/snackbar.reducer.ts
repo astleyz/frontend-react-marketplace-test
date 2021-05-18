@@ -1,5 +1,5 @@
 import { Reducer } from 'redux';
-import { SET_SNACKBAR } from '../types';
+import { SET_SNACKBAR, CLEAR_TOKEN } from '../types';
 import { ActionTypes } from '../../interfaces/actions';
 import { ISnackbar } from '../../interfaces/snackbar';
 
@@ -21,6 +21,8 @@ export const snackbarReducer: Reducer<ISnackbar, ActionTypes> = (state = initial
         snackbarMessage,
         snackbarTime,
       };
+    case CLEAR_TOKEN:
+      return { ...initialState };
     default:
       return state;
   }

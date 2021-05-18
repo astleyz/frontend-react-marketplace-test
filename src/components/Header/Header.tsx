@@ -1,32 +1,34 @@
 import React, { FC, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import cx from 'classnames';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import styles from './Header.module.scss';
 import Authorization from '../Auth/Authorization';
 import Registration from '../Auth/Registration';
-import useAuth from '../../hooks/useAuth';
 import useHttp from '../../hooks/useHttp';
 import { api } from '../../api';
-import { getUserAccountData } from '../../store/selectors';
+import { getAuthStatus, getUserAccountData } from '../../store/selectors';
 import { IUserData } from '../../store/reducers/user.reducer';
 import { saveUserFullName, clearToken } from '../../store/actions';
 import Search from '../Search/Search';
 
 const Header: FC = () => {
-  const { isAuthenticated, dispatch } = useAuth();
+  const dispatch = useDispatch();
+  const isAuthorized: boolean = useSelector(getAuthStatus);
   const { request, loading, data } = useHttp<Pick<IUserData, 'name' | 'img'>>();
   const user: Partial<IUserData> | null = useSelector(getUserAccountData);
 
   useEffect(() => {
-    if (isAuthenticated && !loading && !user) {
+    if (isAuthorized && !loading && !user) {
       request(api.user.getFullName);
     }
-  }, [request, isAuthenticated, user, loading]);
+  }, [request, isAuthorized, user, loading]);
 
   useEffect(() => {
-    if (data) dispatch(saveUserFullName(data));
+    if (data) {
+      dispatch(saveUserFullName(data));
+    }
   }, [dispatch, data]);
 
   const [isAuthOpen, setAuthOpen] = React.useState(false);
@@ -58,7 +60,7 @@ const Header: FC = () => {
             <Link to="/">DeMovie</Link>
           </div>
           <Search />
-          {isAuthenticated && user ? (
+          {isAuthorized && user ? (
             <ul className="right" style={{ display: 'flex' }}>
               <li className={styles.userBlock}>
                 <div className={styles.imgBox}>

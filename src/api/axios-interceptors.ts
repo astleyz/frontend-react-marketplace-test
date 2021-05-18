@@ -14,6 +14,7 @@ switch (process.env.NODE_ENV) {
     break;
 }
 
+let isTokenRefreshing = false;
 const checkIsTokenValid = (token: string): boolean => {
   const expTime = JSON.parse(atob(token.split('.')[1])).exp;
   const timeNow = +Date.now().toString().substr(0, 10);
@@ -29,11 +30,13 @@ instance.interceptors.request.use(
   async request => {
     const token = store.getState().auth.token;
     if (token) request.headers['Authorization'] = token;
-    // if (token && !checkIsTokenValid(token)) {
-    //   const response = await api.auth.refreshTokens();
-    //   request.headers['Authorization'] = response.data.token;
-    //   store.dispatch(setToken(response.data.token));
-    // }
+    if (token && !checkIsTokenValid(token) && !isTokenRefreshing) {
+      isTokenRefreshing = true;
+      const response = await api.auth.refreshTokens();
+      isTokenRefreshing = false;
+      request.headers['Authorization'] = response.data.token;
+      store.dispatch(setToken(response.data.token));
+    }
 
     return request;
   },

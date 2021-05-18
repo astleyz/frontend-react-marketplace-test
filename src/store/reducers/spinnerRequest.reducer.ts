@@ -6,6 +6,7 @@ import {
   FILL_FETCHED,
   SET_FETCHING_ERROR,
   RESET_SPINNER,
+  CLEAR_TOKEN,
 } from '../types';
 
 export type RequestState = {
@@ -34,6 +35,8 @@ export const requestReducer: Reducer<RequestState, ActionTypes> = (
     case SET_FETCHING_ERROR:
       return { ...state, error: { message: action.message } };
     case RESET_SPINNER:
+      return { ...initialState };
+    case CLEAR_TOKEN:
       return { ...initialState };
 
     default:

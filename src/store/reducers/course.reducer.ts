@@ -1,20 +1,18 @@
 import { Reducer } from 'redux';
-import { ADD_COURSE, REMOVE_COURSE, EDIT_COURSE, RESET_COURSE, SAVE_COURSES } from '../types';
+import { REMOVE_COURSE, EDIT_COURSE, RESET_COURSE, SAVE_COURSES } from '../types';
 import { CourseActionTypes } from '../../interfaces/actions';
 import { ICourse } from '../../interfaces/course';
 
 type CourseState = {
-  link: string;
   id: string;
   course: Partial<ICourse>;
-  courses: ICourse[];
+  fetchedCourses: ICourse[];
 };
 
 const initialState: CourseState = {
-  link: '',
   id: '',
   course: {},
-  courses: [],
+  fetchedCourses: [],
 };
 
 export const courseReducer: Reducer<CourseState, CourseActionTypes> = (
@@ -22,14 +20,12 @@ export const courseReducer: Reducer<CourseState, CourseActionTypes> = (
   action
 ) => {
   switch (action.type) {
-    case ADD_COURSE:
-      return { ...state, link: action.link };
     case REMOVE_COURSE:
       return { ...state, id: action.id };
     case EDIT_COURSE:
       return { ...state, course: action.course };
     case SAVE_COURSES:
-      return { ...state, courses: action.payload };
+      return { ...state, fetchedCourses: action.payload };
     case RESET_COURSE:
       return { ...initialState };
 

@@ -1,5 +1,6 @@
+import { put } from 'redux-saga/effects';
 import { api } from '../../api';
-import { addCourseAction, saveAllCourses } from '../actions';
+import { addCourseAction, saveAllCourses, setSnackbar } from '../actions';
 import { ICourse } from '../../interfaces/course';
 import { makeRequestWithSpinner } from './spinnerRequest.saga';
 import {
@@ -13,13 +14,16 @@ export function* addCourseWorker({ link }: addCourseAction): Generator {
   const options = {
     reset: resetRequestSpinner,
     fetcher: api.courses.addCourseToUser,
-    data: link,
+    data: { link },
     startFetching,
     stopFetching,
     fillFetched,
   };
 
-  yield makeRequestWithSpinner<null>(options);
+  try {
+    yield makeRequestWithSpinner<null>(options);
+    yield put(setSnackbar(true, 'success', 'Курс добавлен', 3000));
+  } catch (e) {}
 }
 
 export function* getAllCoursesWorker(): Generator {
@@ -31,5 +35,7 @@ export function* getAllCoursesWorker(): Generator {
     fillFetched: saveAllCourses,
   };
 
-  yield makeRequestWithSpinner<ICourse[]>(options);
+  try {
+    yield makeRequestWithSpinner<ICourse[]>(options);
+  } catch (e) {}
 }

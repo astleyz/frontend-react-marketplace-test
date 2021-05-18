@@ -8,8 +8,11 @@ import Snackbar from './components/Snackbar/Snackbar';
 import CoursePage from './pages/CoursePage';
 import LessonPage from './pages/LessonPage';
 import NotFound from './pages/NotFound';
+import useAuth from './hooks/useAuth';
 
 const App: FC = () => {
+  useAuth();
+
   return (
     <>
       <Snackbar />

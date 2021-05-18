@@ -1,19 +1,12 @@
 import { put, call, delay } from 'redux-saga/effects';
 import { SagaIterator } from 'redux-saga';
 import { api } from '../../api';
-import {
-  AuthorizationAction,
-  setSnackbar,
-  RegistrationAction,
-  setToken,
-  saveUserFetchedData,
-} from '../actions';
+import { AuthorizationAction, setSnackbar, RegistrationAction, setToken } from '../actions';
 
 export function* authorizationWorker({ data, formik }: AuthorizationAction): SagaIterator {
   try {
     const response = yield call(api.auth.login, data);
     yield put(setToken(response.data.token));
-    yield put(saveUserFetchedData(response.data.user));
     formik.setSubmitting(false);
     formik.resetForm();
     yield delay(100);
@@ -29,7 +22,6 @@ export function* registrationWorker({ data, formik }: RegistrationAction): SagaI
   try {
     const response = yield call(api.auth.register, data);
     yield put(setToken(response.data.token));
-    yield put(saveUserFetchedData(response.data.user));
     formik.setSubmitting(false);
     formik.resetForm();
     yield delay(200);

@@ -1,12 +1,27 @@
-import { useSelector, useDispatch } from 'react-redux';
-import { getAuthStatus } from '../store/selectors';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { api } from '../api';
+import { setToken } from '../store/actions/auth.action';
 
 const useAuth = () => {
   const dispatch = useDispatch();
+  const [ready, setReady] = useState(false);
 
-  const isAuthenticated: boolean = useSelector(getAuthStatus);
+  useEffect(() => {
+    const tryAuthenticate = async () => {
+      try {
+        const response = await api.auth.refreshTokens();
+        dispatch(setToken(response.data.token));
+        setReady(true);
+      } catch (e) {
+        setReady(true);
+      }
+    };
 
-  return { isAuthenticated, dispatch };
+    if (!ready) tryAuthenticate();
+  }, [dispatch, ready]);
+
+  return { ready };
 };
 
 export default useAuth;

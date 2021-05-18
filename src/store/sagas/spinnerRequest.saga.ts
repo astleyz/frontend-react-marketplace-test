@@ -24,8 +24,8 @@ export function* makeRequestWithSpinner<T>(options: OptionsType<T>): SagaIterato
   } catch (e) {
     const errText = e.response?.data?.message || e.message || 'Client Error';
     yield put(setSnackbar(true, 'error', errText, 5000));
+    throw e;
   } finally {
     yield put(options.stopFetching());
-    // yield put(options.reset());
   }
 }
