@@ -1,0 +1,40 @@
+@import '../../styles/vars.module.scss';
+
+.container {
+  h2 {
+    font-size: 26px;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  h3 {
+    margin-top: 0;
+    margin-bottom: 25px;
+    color: $mainColor;
+    font-weight: bold;
+    font-size: 15px;
+  }
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+}
+
+.lesson {
+  display: flex;
+  flex-direction: row;
+  padding: 0 1rem 0 0.1rem;
+  margin-bottom: 5px !important;
+
+  span {
+    display: block;
+  }
+
+  span:nth-child(1) {
+    flex-grow: 1;
+  }
+  span:nth-child(2) {
+    width: 100px;
+    margin-right: 3rem;
+  }
+}

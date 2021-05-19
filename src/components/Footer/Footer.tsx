@@ -2,10 +2,11 @@ import React, { FC } from 'react';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
+import { Link } from 'react-router-dom';
 
 const Footer: FC = () => {
   return (
-    <footer className="page-footer teal lighten-2">
+    <footer className="page-footer teal lighten-2" style={{ marginTop: '10rem' }}>
       <div className="container">
         <div className="row">
           <div className="col l6 s12">
@@ -34,9 +35,9 @@ const Footer: FC = () => {
       <div className="footer-copyright">
         <div className="container">
           © 2021 Copyright, All Rights Reserved
-          <a className="grey-text text-lighten-4 right" href="#!">
+          <Link className="grey-text text-lighten-4 right" to="/privacy">
             Privacy
-          </a>
+          </Link>
         </div>
       </div>
     </footer>

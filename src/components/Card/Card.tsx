@@ -2,30 +2,31 @@ import React, { FC } from 'react';
 import style from './Card.module.scss';
 import cx from 'classnames';
 import { Link } from 'react-router-dom';
+import { ILightCourse } from '../../interfaces/course';
 
-const Card: FC = () => {
+interface CardProps {
+  course: ILightCourse;
+}
+
+const Card: FC<CardProps> = ({ course }) => {
   return (
     <div className="row">
       <div className="col s12" style={{ padding: 0 }}>
         <div className={cx('card', style.card)}>
           <div className={style.cardBox}>
-            <img
-              className={style.img}
-              src="https://www.dreamhost.com/blog/wp-content/uploads/2017/10/online_course-750x375.jpg"
-              alt=""
-            />
+            <img className={style.img} src={course.img} alt="" />
           </div>
           <div className={style.content}>
-            <h2 className={style.title}>Golang для начинающих. Подробные уроки</h2>
-            <p className={style.description}>
-              Простыми словами, разберем как работать на языке программирования Go. Его особенности
-              и тонкости.
-            </p>
-            <span className={style.author}>Alex Marshal</span>
-            <span className={style.length}>Всего 5,5 ч. 24 уроков</span>
+            <h2 className={style.title}>{course.title}</h2>
+            <p className={style.subTitle}>{course.subTitle}</p>
+            <span className={style.author}>{course.authorNames.join(', ')}</span>
+            <span className={style.length}>
+              {`Всего ${course.fullLength.match(/(?<=ость\s).+/g)}` +
+                `, ${course.fullLength.match(/(?<=•\s).+(?=\s•)/g)}`}
+            </span>
           </div>
           <div className={cx('card-action', style.cardAction)}>
-            <Link to="/courses/goland">Открыть</Link>
+            <Link to={`/courses/${course.id}`}>Открыть</Link>
           </div>
         </div>
       </div>

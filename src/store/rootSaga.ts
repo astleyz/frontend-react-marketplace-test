@@ -1,18 +1,21 @@
 import { all, fork, takeEvery } from 'redux-saga/effects';
 import { SagaIterator } from 'redux-saga';
-import { REQUEST_LOGIN, REQUEST_REGISTRATION, ADD_COURSE } from './types';
-import { authorizationWorker, registrationWorker } from './sagas/auth.saga';
-import { addCourseWorker } from './sagas/course.saga';
+import * as type from './types';
+import * as auth from './sagas/auth.saga';
+import * as course from './sagas/course.saga';
 
 export function* authWatcher(): SagaIterator {
-  yield takeEvery<typeof REQUEST_LOGIN, (arg: any) => void>(REQUEST_LOGIN, authorizationWorker);
-  yield takeEvery<typeof REQUEST_REGISTRATION, (arg: any) => void>(
-    REQUEST_REGISTRATION,
-    registrationWorker
-  );
-  yield takeEvery<typeof ADD_COURSE, (arg: any) => void>(ADD_COURSE, addCourseWorker);
+  yield takeEvery(type.REQUEST_LOGIN, auth.authorizationWorker);
+  yield takeEvery(type.REQUEST_REGISTRATION, auth.registrationWorker);
+}
+
+export function* courseWatcher(): SagaIterator {
+  yield takeEvery(type.ADD_COURSE, course.addCourseWorker);
+  yield takeEvery(type.FETCH_COURSES, course.fetchAllCoursesWorker);
+  yield takeEvery(type.FETCH_ONE_COURSE, course.fetchCourseWorker);
+  yield takeEvery(type.EDIT_ONE_COURSE, course.editCourseWorker);
 }
 
 export default function* rootSaga(): SagaIterator {
-  yield all([fork(authWatcher)]);
+  yield all([fork(authWatcher), fork(courseWatcher)]);
 }

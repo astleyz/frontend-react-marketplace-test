@@ -29,9 +29,15 @@ const Search: FC = () => {
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputState(e.target.value);
   };
-  const handleAddCourse = () => {
-    dispatch(addCourse(inputState));
-    setInputState('');
+
+  const handleAddCourse = (e: any) => {
+    if ((e.type === 'keypress' && e.key === 'Enter') || e.type === 'click') {
+      const cb = () => {
+        setInputState('');
+        e.target.blur();
+      };
+      dispatch(addCourse(inputState, cb));
+    }
   };
 
   return (
@@ -48,6 +54,7 @@ const Search: FC = () => {
             spellCheck="false"
             value={inputState}
             onChange={handleInputChange}
+            onKeyPress={handleAddCourse}
           />
         </Tooltip>
       ) : (

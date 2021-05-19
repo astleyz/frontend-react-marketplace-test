@@ -1,17 +1,15 @@
 import { Reducer } from 'redux';
-import { REMOVE_COURSE, EDIT_COURSE, RESET_COURSE, SAVE_COURSES } from '../types';
+import { REMOVE_ONE_COURSE, RESET_FETCHED_COURSES, SAVE_COURSES, SAVE_ONE_COURSE } from '../types';
 import { CourseActionTypes } from '../../interfaces/actions';
-import { ICourse } from '../../interfaces/course';
+import { ILightCourse, IFullCourse } from '../../interfaces/course';
 
 type CourseState = {
-  id: string;
-  course: Partial<ICourse>;
-  fetchedCourses: ICourse[];
+  course: IFullCourse | null;
+  fetchedCourses: ILightCourse[];
 };
 
 const initialState: CourseState = {
-  id: '',
-  course: {},
+  course: null,
   fetchedCourses: [],
 };
 
@@ -20,14 +18,14 @@ export const courseReducer: Reducer<CourseState, CourseActionTypes> = (
   action
 ) => {
   switch (action.type) {
-    case REMOVE_COURSE:
-      return { ...state, id: action.id };
-    case EDIT_COURSE:
-      return { ...state, course: action.course };
+    case SAVE_ONE_COURSE:
+      return { ...state, course: action.payload };
+    case REMOVE_ONE_COURSE:
+      return { ...state, course: null };
     case SAVE_COURSES:
       return { ...state, fetchedCourses: action.payload };
-    case RESET_COURSE:
-      return { ...initialState };
+    case RESET_FETCHED_COURSES:
+      return { ...state, fetchedCourses: [] };
 
     default:
       // eslint-disable-next-line @typescript-eslint/no-unused-vars

@@ -1,6 +1,8 @@
+@import '../styles/vars.module.scss';
+
 .topCard {
   background-color: #12161c;
-  margin-top: -20px;
+  margin-top: -5px;
   color: #f0b90b;
   height: 200px;
   width: 100%;
@@ -14,6 +16,7 @@
     flex-direction: column;
     justify-content: space-between;
     padding: 15px 0;
+    margin-right: 5rem;
 
     h2 {
       font-family: sf pro display, -apple-system, BlinkMacSystemFont, Roboto, segoe ui, Helvetica,
@@ -25,7 +28,7 @@
       margin: 0;
     }
 
-    .description,
+    .subTitle,
     .author,
     .length {
       font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto, segoe ui, Helvetica,
@@ -42,7 +45,7 @@
     }
 
     .author {
-      opacity: 0.8;
+      color: $mainColor;
     }
   }
 
@@ -52,5 +55,188 @@
       height: 100%;
       max-width: 350px;
     }
+  }
+}
+
+div.whatWillYouLearn {
+  width: 700px;
+  background-color: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  padding-bottom: 1.5rem;
+  margin-top: 3rem;
+  color: #3c3b37;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  h2 {
+    font-size: 26px;
+    margin-bottom: 16px;
+    font-weight: bold;
+  }
+
+  ul {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      display: flex;
+      flex-flow: row nowrap;
+      width: 263px;
+      padding: 8px 0;
+
+      span {
+        font-size: 1rem;
+        margin-right: 1rem;
+      }
+    }
+  }
+}
+
+div.requirements,
+div.description,
+div.forWho,
+div.instructor {
+  width: 70%;
+  padding-bottom: 1.5rem;
+  font-size: 15px;
+  margin-top: 3rem;
+  color: #3c3b37;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+div.requirements,
+div.forWho,
+div.instructor {
+  h2 {
+    font-size: 26px;
+    margin-bottom: 16px;
+    font-weight: bold;
+  }
+
+  ul {
+    display: flex;
+    flex-flow: column;
+    margin: 0;
+    padding: 0;
+
+    li {
+      padding: 10px 0;
+      margin-left: 15px;
+      list-style: circle;
+    }
+  }
+}
+
+div.description {
+  margin-top: 1rem;
+
+  h2 {
+    font-size: 26px;
+    margin-bottom: 26px;
+    font-weight: bold;
+  }
+
+  div {
+    @extend .html;
+  }
+}
+
+div.forWho {
+  h2 {
+    margin-top: 0;
+  }
+}
+
+div.instructor {
+  form {
+    position: relative;
+
+    h2 {
+      display: inline;
+    }
+
+    .edit {
+      position: absolute;
+      top: 0;
+      left: 190px;
+      cursor: pointer;
+      color: skyblue;
+      font-size: 15px;
+      padding-left: 20px;
+    }
+
+    .buttons {
+      display: inline-block;
+      position: absolute;
+      top: 0;
+      left: 450px;
+      > button:nth-child(1) {
+        background-color: green;
+        height: 25px;
+        margin-right: 10px;
+      }
+      > button:nth-child(2),
+      > button:nth-child(2):focus {
+        background-color: darkred;
+        height: 25px;
+      }
+    }
+
+    h3 {
+      margin-top: 15px;
+      margin-bottom: 7px;
+      color: $mainColor;
+      font-weight: bold;
+      font-size: 19px;
+    }
+
+    .jobs {
+      color: #73726c;
+      font-size: 16px;
+    }
+  }
+
+  .profile {
+    margin-top: 30px;
+
+    .imgBlock {
+      float: left;
+      margin-right: 25px;
+      margin-bottom: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      p {
+        margin-bottom: 10px;
+        color: $mainColor;
+        font-weight: bold;
+      }
+      img {
+        border-radius: 50%;
+      }
+    }
+    .aboutme {
+      @extend .html;
+      display: block;
+      float: none;
+    }
+  }
+}
+
+.html {
+  font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto, segoe ui, Helvetica, Arial,
+    sans-serif, apple color emoji, segoe ui emoji, segoe ui symbol;
+
+  p:not(:first-child) {
+    line-height: 1.4;
+    margin-top: 0.8rem;
   }
 }

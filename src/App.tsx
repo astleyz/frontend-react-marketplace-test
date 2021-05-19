@@ -1,39 +1,23 @@
 import { FC } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import Header from './components/Header/Header';
-import Breadcrumbs from './components/Breadcrumbs/Breadcrumbs';
-import Card from './components/Card/Card';
-import Footer from './components/Footer/Footer';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import Snackbar from './components/Snackbar/Snackbar';
 import CoursePage from './pages/CoursePage';
 import LessonPage from './pages/LessonPage';
 import NotFound from './pages/NotFound';
 import useAuth from './hooks/useAuth';
+import HomePage from './pages/HomePage';
 
 const App: FC = () => {
-  useAuth();
+  const { ready } = useAuth();
 
+  if (!ready) return null;
   return (
     <>
       <Snackbar />
       <BrowserRouter>
         <Switch>
-          <Route
-            path="/"
-            exact
-            render={() => (
-              <div
-                style={{ minHeight: '100%', display: 'grid', gridTemplateRows: 'auto 1fr auto' }}
-              >
-                <Header />
-                <div className="container" style={{ marginTop: '2rem' }}>
-                  <Breadcrumbs />
-                  <Card />
-                </div>
-                <Footer />
-              </div>
-            )}
-          />
+          <Route path="/" exact component={HomePage} />
+          <Redirect path="/courses" exact to="/" />
           <Route path="/courses/:id" exact component={CoursePage} />
           <Route path="/courses/:id/:lesson" exact component={LessonPage} />
           <Route component={NotFound} />

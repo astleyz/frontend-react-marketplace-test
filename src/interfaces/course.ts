@@ -1,7 +1,65 @@
-export interface ICourse {
+import { RecursivePartial } from './universal';
+
+export type ILightCourse = {
+  fullLength: string;
+} & Pick<IFullCourse, 'id' | 'title' | 'subTitle' | 'img' | 'authorNames'>;
+
+export interface IFullCourse {
+  readonly id: string;
+  readonly ownerId: {
+    readonly login: string;
+  };
   title: string;
-  description: string;
-  author: string;
+  subTitle: string;
   img: string;
-  length: string;
+  authors: string;
+  authorNames: string[];
+  whatWillYouLearn: {
+    title: string;
+    items: string[];
+  };
+  requirements: {
+    title: string;
+    items: string[];
+  };
+  description: {
+    title: string;
+    html: string;
+  };
+  forWho: {
+    title: string;
+    items: string[];
+  };
+  materials: {
+    title: string;
+    info: string;
+    sections: [
+      {
+        title: string;
+        fullLength: string;
+        lessons: [
+          {
+            name: string;
+            length: string;
+            comments: [
+              {
+                name: string;
+                date: string;
+                text: string;
+              }
+            ];
+          }
+        ];
+      }
+    ];
+  };
+  instructor: {
+    title: string;
+    names: string[];
+    jobs: string[];
+    coursesQuantity: string;
+    aboutme: string;
+  };
 }
+
+export type PartialFullCourse = { id: string } & RecursivePartial<IFullCourse>;

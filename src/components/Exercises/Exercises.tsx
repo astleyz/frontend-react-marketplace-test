@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { FC, useState } from 'react';
+import { Dispatch } from 'redux';
+import { useSelector } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import MuiAccordion from '@material-ui/core/Accordion';
 import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
 import MuiAccordionDetails from '@material-ui/core/AccordionDetails';
-import Typography from '@material-ui/core/Typography';
-import { Link } from 'react-router-dom';
+import { Container, Typography } from '@material-ui/core';
+import { Link, useParams } from 'react-router-dom';
+import { IFullCourse } from '../../interfaces/course';
+import styles from './Exercises.module.scss';
+import { getAuthStatus } from '../../store/selectors';
+import Authorization from '../Auth/Authorization';
 
 const Accordion = withStyles({
   root: {
@@ -47,45 +53,60 @@ const AccordionDetails = withStyles(theme => ({
   },
 }))(MuiAccordionDetails);
 
-const titles = [
-  { title: 'Урок #1', description: 'Переменные среды. Редактор кода' },
-  { title: 'Урок #2', description: 'Получение данных от пользователя' },
-  { title: 'Урок #3', description: 'Преобразование строки в число' },
-];
+type ExercisesProps = Pick<IFullCourse, 'materials'> & { dispatch: Dispatch };
 
-const Exercises = () => {
+const Exercises: FC<ExercisesProps> = ({ materials, dispatch }) => {
+  const { id } = useParams<{ id: string }>();
+  const isAuthorized = useSelector(getAuthStatus);
+
+  const [isAuthOpen, setAuthOpen] = useState(false);
   const [expanded, setExpanded] = React.useState<string | false>(
-    (titles[0] && `${titles[0]}0`) || ''
+    `${materials.sections[0].title}0` || ''
   );
 
+  const handleAuthOpen = () => setAuthOpen(true);
+  const handleAuthClose = () => setAuthOpen(false);
   const handleChange = (panel: string) => (e: React.ChangeEvent<{}>, newExpanded: boolean) => {
     setExpanded(newExpanded ? panel : false);
   };
 
   return (
-    <>
-      {titles.map((it, idx) => (
+    <Container className={styles.container}>
+      <h2>{materials.title}</h2>
+      <h3>{materials.info}</h3>
+      {materials.sections.map((section, sIdx) => (
         <Accordion
-          key={`${it.title}${idx}`}
+          key={`${section.title}${sIdx}`}
           square
-          expanded={expanded === `${it.title}${idx}`}
-          onChange={handleChange(`${it.title}${idx}`)}
+          expanded={expanded === `${section.title}${sIdx}`}
+          onChange={handleChange(`${section.title}${sIdx}`)}
         >
           <AccordionSummary>
-            <Typography>{it.title}</Typography>
+            <Typography># {section.title}</Typography>
           </AccordionSummary>
-          <AccordionDetails>
-            <Typography>
-              {it.description}
-              &nbsp;&nbsp;&nbsp;
-              <span>
-                <Link to={`/courses/:id/lesson${idx}`}>[подробнее]</Link>
-              </span>
-            </Typography>
+          <AccordionDetails className={styles.details}>
+            {section.lessons.map((lesson, lIdx) => (
+              <Typography className={styles.lesson} key={`${lesson.name}${lIdx}`}>
+                <span>{`${lIdx + 1}. ${lesson.name}`}</span>
+                <span>
+                  {isAuthorized ? (
+                    <Link to={`/courses/${id}/showtopic?section=${sIdx + 1}&lesson=${lIdx + 1}`}>
+                      [ подробнее ]
+                    </Link>
+                  ) : (
+                    <span style={{ cursor: 'pointer', color: 'blue' }} onClick={handleAuthOpen}>
+                      [ подробнее ]
+                    </span>
+                  )}
+                </span>
+                <span>{lesson.length}</span>
+              </Typography>
+            ))}
           </AccordionDetails>
         </Accordion>
       ))}
-    </>
+      <Authorization isOpen={isAuthOpen} onClose={handleAuthClose} dispatch={dispatch} />
+    </Container>
   );
 };
 

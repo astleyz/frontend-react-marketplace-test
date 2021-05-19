@@ -10,8 +10,7 @@ export const getAuthStatus = (state: RootState) => state.auth.isAuthenticated;
 
 export const getUserAccountData = (state: RootState) => state.user;
 
-export const getCourseId = (state: RootState) => state.course.id;
-export const getCourseForEdit = (state: RootState) => state.course.course;
+export const getFullCourse = (state: RootState) => state.course.course;
 export const getFetchedCourses = (state: RootState) => state.course.fetchedCourses;
 
 export const getIsFetchingSpinner = (state: RootState) => state.spinnerRequest.isFetching;

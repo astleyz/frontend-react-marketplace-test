@@ -2,7 +2,7 @@ import { AxiosResponse } from 'axios';
 import { ILoginProps, IRegisterProps, AuthResponse } from '../interfaces/auth';
 import { IUserData } from '../store/reducers/user.reducer';
 import instance from './axios-interceptors';
-import { ICourse } from '../interfaces/course';
+import { ILightCourse, IFullCourse, PartialFullCourse } from '../interfaces/course';
 
 export type FetchDataType<T = any> = Promise<AxiosResponse<T>>;
 
@@ -17,8 +17,10 @@ export type APIFetchDataType = {
     getFullName: () => FetchDataType<Pick<IUserData, 'name' | 'img'>>;
   };
   courses: {
-    getAllCourses: () => FetchDataType<ICourse[]>;
     addCourseToUser: (link: string) => FetchDataType<null>;
+    getCourse: (id: string) => FetchDataType<IFullCourse>;
+    patchCourse: (course: PartialFullCourse) => FetchDataType<IFullCourse>;
+    getAllCourses: () => FetchDataType<ILightCourse[]>;
   };
 };
 
@@ -33,7 +35,9 @@ export const api: APIFetchDataType = Object.freeze({
     getFullName: () => instance.get('/user?name=true&img=true'),
   },
   courses: {
-    getAllCourses: () => instance.get('/courses'),
     addCourseToUser: (link: string) => instance.post('/courses/create', link),
+    getCourse: (id: string) => instance.get(`/courses/${id}`),
+    patchCourse: (course: PartialFullCourse) => instance.patch(`/courses/${course.id}`, course),
+    getAllCourses: () => instance.get('/courses'),
   },
 });
