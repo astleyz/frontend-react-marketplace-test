@@ -1,6 +1,4 @@
-import React, { FC, useState } from 'react';
-import { Dispatch } from 'redux';
-import { useSelector } from 'react-redux';
+import React, { FC } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import MuiAccordion from '@material-ui/core/Accordion';
 import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
@@ -9,8 +7,6 @@ import { Container, Typography } from '@material-ui/core';
 import { Link, useParams } from 'react-router-dom';
 import { IFullCourse } from '../../interfaces/course';
 import styles from './Exercises.module.scss';
-import { getAuthStatus } from '../../store/selectors';
-import Authorization from '../Auth/Authorization';
 
 const Accordion = withStyles({
   root: {
@@ -53,19 +49,15 @@ const AccordionDetails = withStyles(theme => ({
   },
 }))(MuiAccordionDetails);
 
-type ExercisesProps = Pick<IFullCourse, 'materials'> & { dispatch: Dispatch };
+type ExercisesProps = Pick<IFullCourse, 'materials'>;
 
-const Exercises: FC<ExercisesProps> = ({ materials, dispatch }) => {
+const Exercises: FC<ExercisesProps> = ({ materials }) => {
   const { id } = useParams<{ id: string }>();
-  const isAuthorized = useSelector(getAuthStatus);
 
-  const [isAuthOpen, setAuthOpen] = useState(false);
   const [expanded, setExpanded] = React.useState<string | false>(
     `${materials.sections[0].title}0` || ''
   );
 
-  const handleAuthOpen = () => setAuthOpen(true);
-  const handleAuthClose = () => setAuthOpen(false);
   const handleChange = (panel: string) => (e: React.ChangeEvent<{}>, newExpanded: boolean) => {
     setExpanded(newExpanded ? panel : false);
   };
@@ -89,15 +81,9 @@ const Exercises: FC<ExercisesProps> = ({ materials, dispatch }) => {
               <Typography className={styles.lesson} key={`${lesson.name}${lIdx}`}>
                 <span>{`${lIdx + 1}. ${lesson.name}`}</span>
                 <span>
-                  {isAuthorized ? (
-                    <Link to={`/courses/${id}/showtopic?section=${sIdx + 1}&lesson=${lIdx + 1}`}>
-                      [ подробнее ]
-                    </Link>
-                  ) : (
-                    <span style={{ cursor: 'pointer', color: 'blue' }} onClick={handleAuthOpen}>
-                      [ подробнее ]
-                    </span>
-                  )}
+                  <Link to={`/courses/${id}/showtopic?section=${sIdx + 1}&lesson=${lIdx + 1}`}>
+                    [ подробнее ]
+                  </Link>
                 </span>
                 <span>{lesson.length}</span>
               </Typography>
@@ -105,7 +91,6 @@ const Exercises: FC<ExercisesProps> = ({ materials, dispatch }) => {
           </AccordionDetails>
         </Accordion>
       ))}
-      <Authorization isOpen={isAuthOpen} onClose={handleAuthClose} dispatch={dispatch} />
     </Container>
   );
 };

@@ -36,7 +36,7 @@ export const courseReducer: Reducer<CourseState, CourseActionTypes> = (
     case CLEAR_FETCHED_COURSES:
       return { ...state, fetchedCourses: [] };
     case SET_LESSON:
-      return { ...state, lesson: action.lesson };
+      return { ...state, lesson: action.payload };
     case CLEAR_LESSON:
       return { ...state, lesson: null };
 

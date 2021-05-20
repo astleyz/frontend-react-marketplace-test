@@ -20,9 +20,12 @@ type OptionsType<T> = {
   startFetching?: ActionCreator<AnyAction>;
   stopFetching?: ActionCreator<AnyAction>;
   fillFetched?: fillActionType<T>;
+  snackbarOnError?: boolean;
 };
 
 export function* makeRequestWithSpinner<T>(options: OptionsType<T>): SagaIterator {
+  if (options.snackbarOnError === undefined) options.snackbarOnError = true;
+
   try {
     if (options.reset) yield put(options.reset());
     if (options.startFetching) yield put(options.startFetching());
@@ -30,7 +33,7 @@ export function* makeRequestWithSpinner<T>(options: OptionsType<T>): SagaIterato
     if (options.fillFetched) yield put(options.fillFetched(response.data));
   } catch (e) {
     const errText = e.response?.data?.message || e.message || 'Client Error';
-    yield put(setSnackbar(true, 'error', errText, 5000));
+    if (options.snackbarOnError) yield put(setSnackbar(true, 'error', errText, 5000));
     throw e;
   } finally {
     if (options.stopFetching) yield put(options.stopFetching());

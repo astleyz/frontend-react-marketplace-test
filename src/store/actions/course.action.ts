@@ -8,12 +8,12 @@ import {
   FETCH_ONE_COURSE,
   SAVE_ONE_COURSE,
   REMOVE_ONE_COURSE,
+  FETCH_LESSON,
   SET_LESSON,
   CLEAR_LESSON,
 } from '../types';
 import { ILightCourse, IFullCourse, PartialFullCourse, ILesson } from '../../interfaces/course';
 import { Action } from 'redux';
-import { History } from 'history';
 
 // Types
 export type addCourseAction = {
@@ -40,7 +40,7 @@ export type editCourseAction = {
 export type removeCourseAction = {
   type: typeof REMOVE_ONE_COURSE;
   id: string;
-  history: History;
+  cb: () => void;
 };
 
 export type saveCoursesAction = {
@@ -48,9 +48,14 @@ export type saveCoursesAction = {
   payload: ILightCourse[];
 };
 
+export type fetchLessonAction = {
+  type: typeof FETCH_LESSON;
+  path: string;
+};
+
 export type setLessonAction = {
   type: typeof SET_LESSON;
-  lesson: ILesson;
+  payload: ILesson;
 };
 
 // Actions
@@ -83,10 +88,10 @@ export const clearCourseInStore = (): Action<typeof CLEAR_ONE_COURSE> => ({
   type: CLEAR_ONE_COURSE,
 });
 
-export const removeCourse = (id: string, history: History): removeCourseAction => ({
+export const removeCourse = (id: string, cb: () => void): removeCourseAction => ({
   type: REMOVE_ONE_COURSE,
   id,
-  history,
+  cb,
 });
 
 export const saveAllCourses = (payload: ILightCourse[]): saveCoursesAction => ({
@@ -98,9 +103,14 @@ export const clearFetchedCourses = (): Action<typeof CLEAR_FETCHED_COURSES> => (
   type: CLEAR_FETCHED_COURSES,
 });
 
-export const setLesson = (lesson: ILesson): setLessonAction => ({
+export const fetchLesson = (path: string): fetchLessonAction => ({
+  type: FETCH_LESSON,
+  path,
+});
+
+export const setLesson = (payload: ILesson): setLessonAction => ({
   type: SET_LESSON,
-  lesson,
+  payload,
 });
 
 export const clearLesson = (): Action<typeof CLEAR_LESSON> => ({

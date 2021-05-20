@@ -13,11 +13,13 @@
 
     li > * {
       color: #fff !important;
+      font-weight: bold;
     }
 
     li > p {
       color: #fff !important;
-      opacity: 0.7;
+      opacity: 1;
+      font-weight: normal;
     }
   }
 }

@@ -3,6 +3,7 @@ import { SagaIterator } from 'redux-saga';
 import * as type from './types';
 import * as auth from './sagas/auth.saga';
 import * as course from './sagas/course.saga';
+import * as lesson from './sagas/lesson.saga';
 
 export function* authWatcher(): SagaIterator {
   yield takeEvery(type.REQUEST_LOGIN, auth.authorizationWorker);
@@ -17,6 +18,10 @@ export function* courseWatcher(): SagaIterator {
   yield takeEvery(type.REMOVE_ONE_COURSE, course.removeCourseWorker);
 }
 
+export function* lessonWatcher(): SagaIterator {
+  yield takeEvery(type.FETCH_LESSON, lesson.fetchLessonWorker);
+}
+
 export default function* rootSaga(): SagaIterator {
-  yield all([fork(authWatcher), fork(courseWatcher)]);
+  yield all([fork(authWatcher), fork(courseWatcher), fork(lessonWatcher)]);
 }

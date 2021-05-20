@@ -6,12 +6,11 @@ import { isNotNull } from '../../interfaces/guard';
 export interface IUserData {
   name: string;
   img: string;
-  courses: any[];
 }
 
 const initialState: IUserData | null = null;
 
-export const userReducer: Reducer<Partial<IUserData> | null, UserActionTypes> = (
+export const userReducer: Reducer<IUserData | null, UserActionTypes> = (
   state = initialState,
   action
 ) => {

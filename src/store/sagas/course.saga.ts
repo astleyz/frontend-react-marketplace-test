@@ -11,6 +11,7 @@ import {
   setSnackbar,
   fetchCourse,
   clearCourseInStore,
+  setFetchingError,
 } from '../actions';
 import {
   startFetching,
@@ -52,11 +53,14 @@ export function* fetchCourseWorker({ id }: ReturnType<typeof fetchCourse>): Gene
     fetcher: api.course.getCourse,
     data: id,
     fillFetched: saveCourse,
+    snackbarOnError: false,
   };
 
   try {
     yield makeRequestWithSpinner<IFullCourse>(options);
-  } catch (e) {}
+  } catch (e) {
+    yield put(setFetchingError(e));
+  }
 }
 
 export function* editCourseWorker({ course }: editCourseAction): Generator {
@@ -71,7 +75,7 @@ export function* editCourseWorker({ course }: editCourseAction): Generator {
   } catch (e) {}
 }
 
-export function* removeCourseWorker({ id, history }: removeCourseAction): Generator {
+export function* removeCourseWorker({ id, cb }: removeCourseAction): Generator {
   const options = {
     fetcher: api.course.removeCourse,
     data: id,
@@ -80,6 +84,6 @@ export function* removeCourseWorker({ id, history }: removeCourseAction): Genera
   try {
     yield makeRequestWithSpinner<null>(options);
     yield put(clearCourseInStore());
-    history.push('/');
+    cb();
   } catch (e) {}
 }

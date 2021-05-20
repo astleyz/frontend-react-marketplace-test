@@ -1,11 +1,13 @@
-import { FC } from 'react';
+import { FC, lazy } from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import Snackbar from './components/Snackbar/Snackbar';
-import CoursePage from './pages/CoursePage';
-import LessonPage from './pages/LessonPage';
 import NotFound from './components/NotFound/NotFound';
 import useAuth from './hooks/useAuth';
 import HomePage from './pages/HomePage';
+import BoundaryRoute from './hocs/BoundaryRoute';
+
+const CoursePage = lazy(() => import('./pages/CoursePage'));
+const LessonPage = lazy(() => import('./pages/LessonPage'));
 
 const App: FC = () => {
   const { ready } = useAuth();
@@ -18,8 +20,8 @@ const App: FC = () => {
         <Switch>
           <Route path="/" exact component={HomePage} />
           <Redirect path="/courses" exact to="/" />
-          <Route path="/courses/:id" exact component={CoursePage} />
-          <Route path="/courses/:id/:lesson" exact component={LessonPage} />
+          <BoundaryRoute path="/courses/:id" exact suspense component={CoursePage} />
+          <BoundaryRoute path="/courses/:id/:lesson" exact suspense component={LessonPage} />
           <Route component={NotFound} />
         </Switch>
       </BrowserRouter>

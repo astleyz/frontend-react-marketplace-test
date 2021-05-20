@@ -16,6 +16,7 @@ export const SAVE_ONE_COURSE = 'SAVE_ONE_COURSE';
 export const EDIT_ONE_COURSE = 'EDIT_ONE_COURSE';
 export const CLEAR_ONE_COURSE = 'CLEAR_ONE_COURSE';
 export const REMOVE_ONE_COURSE = 'REMOVE_ONE_COURSE';
+export const FETCH_LESSON = 'FETCH_LESSON';
 export const SET_LESSON = 'SET_LESSON';
 export const CLEAR_LESSON = 'CLEAR_LESSON';
 

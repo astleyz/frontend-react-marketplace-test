@@ -21,10 +21,10 @@ export type APIFetchDataType = {
   };
   course: {
     addCourseToUser: (link: string) => FetchDataType<null>;
+    getAllCourses: () => FetchDataType<ILightCourse[]>;
     getCourse: (id: string) => FetchDataType<IFullCourse>;
     patchCourse: (course: PartialFullCourse) => FetchDataType<IFullCourse>;
     removeCourse: (id: string) => FetchDataType<null>;
-    getAllCourses: () => FetchDataType<ILightCourse[]>;
   };
   lesson: {
     getLesson: (path: string) => FetchDataType<ILesson>;
@@ -45,10 +45,10 @@ export const api: APIFetchDataType = Object.freeze({
   },
   course: {
     addCourseToUser: (link: string) => instance.post('/courses/create', link),
+    getAllCourses: () => instance.get('/courses'),
     getCourse: (id: string) => instance.get(`/courses/${id}`),
     patchCourse: (course: PartialFullCourse) => instance.patch(`/courses/${course.id}`, course),
     removeCourse: (id: string) => instance.delete(`/courses/${id}`),
-    getAllCourses: () => instance.get('/courses'),
   },
   lesson: {
     getLesson: (path: string) => instance.get(`/courses/${path}`),

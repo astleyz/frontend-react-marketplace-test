@@ -1,4 +1,5 @@
 import { Action } from 'redux';
+import { AxiosError } from 'axios';
 import {
   START_FETCHING,
   STOP_FETCHING,
@@ -20,10 +21,10 @@ export const fillFetched = <T>(payload: T): Action<typeof FILL_FETCHED> & { payl
   payload,
 });
 
-type ErrorFetchedType = Action<typeof SET_FETCHING_ERROR> & { message: string };
-export const setFetchingError = (message: string): ErrorFetchedType => ({
+type ErrorFetchedType = { type: typeof SET_FETCHING_ERROR; error: AxiosError };
+export const setFetchingError = (error: AxiosError): ErrorFetchedType => ({
   type: SET_FETCHING_ERROR,
-  message,
+  error,
 });
 
 export const resetRequestSpinner = (): Action<typeof RESET_SPINNER> => ({

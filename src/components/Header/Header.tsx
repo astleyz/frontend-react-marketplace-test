@@ -15,7 +15,7 @@ import useHttp from '../../hooks/useHttp';
 import { api } from '../../api';
 import { getAuthStatus, getUserAccountData } from '../../store/selectors';
 import { IUserData } from '../../store/reducers/user.reducer';
-import { saveUserFullName, clearToken } from '../../store/actions';
+import { saveUserFullName, clearToken, setSnackbar } from '../../store/actions';
 import Search from '../Search/Search';
 
 const useStyles = makeStyles(() => ({
@@ -29,7 +29,7 @@ const Header: FC = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const isAuthorized: boolean = useSelector(getAuthStatus);
-  const user: Partial<IUserData> | null = useSelector(getUserAccountData);
+  const user: IUserData | null = useSelector(getUserAccountData);
   const { request, loading, data } = useHttp<Pick<IUserData, 'name' | 'img'>>();
 
   useEffect(() => {
@@ -125,7 +125,7 @@ const Header: FC = () => {
 };
 
 type EditNameProps = {
-  user: Partial<IUserData>;
+  user: IUserData;
   isOpen: boolean;
   onClose: () => void;
 };
@@ -133,7 +133,7 @@ type EditNameProps = {
 const EditName: FC<EditNameProps> = ({ user, isOpen, onClose }) => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
-  const { request, data, dispatch } = useHttp<Pick<IUserData, 'name' | 'img'>>();
+  const { request, data, dispatch, error } = useHttp<Pick<IUserData, 'name' | 'img'>>();
 
   const handleChangeName = (values: Pick<IUserData, 'name'>) => {
     request(() => api.user.changeFullName(values));
@@ -142,11 +142,12 @@ const EditName: FC<EditNameProps> = ({ user, isOpen, onClose }) => {
 
   useEffect(() => {
     if (data) dispatch(saveUserFullName(data));
-  }, [dispatch, data]);
+    if (error) dispatch(setSnackbar(true, 'error', 'Не удалось изменить имя'));
+  }, [dispatch, data, error]);
 
   return (
     <Dialog open={isOpen} onClose={onClose} fullScreen={fullScreen}>
-      <Formik initialValues={{ name: user.name! }} onSubmit={handleChangeName}>
+      <Formik initialValues={{ name: user.name }} onSubmit={handleChangeName}>
         <Form>
           <DialogContent>
             <Field name="name" className="materialize-textarea" spellCheck="false" />

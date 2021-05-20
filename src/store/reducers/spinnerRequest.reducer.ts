@@ -1,4 +1,5 @@
 import { Reducer } from 'redux';
+import { AxiosError } from 'axios';
 import { RequestSpinnerActionTypes as ActionTypes } from '../../interfaces/actions';
 import {
   START_FETCHING,
@@ -12,13 +13,13 @@ import {
 export type RequestState = {
   data: unknown;
   isFetching: boolean;
-  error: false | { message: string };
+  error: null | AxiosError;
 };
 
 const initialState: RequestState = {
   data: null,
   isFetching: false,
-  error: false,
+  error: null,
 };
 
 export const requestReducer: Reducer<RequestState, ActionTypes> = (
@@ -27,15 +28,14 @@ export const requestReducer: Reducer<RequestState, ActionTypes> = (
 ) => {
   switch (action.type) {
     case START_FETCHING:
-      return { ...state, isFetching: true, error: false };
+      return { ...state, isFetching: true, error: null };
     case STOP_FETCHING:
-      return { ...state, isFetching: false, error: false };
+      return { ...state, isFetching: false, error: null };
     case FILL_FETCHED:
-      return { ...state, data: action.payload, error: false };
+      return { ...state, data: action.payload, error: null };
     case SET_FETCHING_ERROR:
-      return { ...state, error: { message: action.message } };
+      return { ...state, error: action.error };
     case RESET_SPINNER:
-      return { ...initialState };
     case CLEAR_TOKEN:
       return { ...initialState };
 

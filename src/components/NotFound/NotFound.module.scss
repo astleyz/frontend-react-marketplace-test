@@ -8,15 +8,8 @@
   color: #333;
   position: relative;
   display: flex;
+  background-color: #1c2931;
 
-  svg {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-top: -250px;
-    margin-left: -400px;
-    z-index: 2;
-  }
   .messageBox {
     height: 200px;
     width: 380px;
@@ -39,49 +32,6 @@
     line-height: 46px;
     margin-bottom: 40px;
   }
-
-  #Polygon-1,
-  #Polygon-2,
-  #Polygon-3,
-  #Polygon-4,
-  #Polygon-4,
-  #Polygon-5 {
-    animation: float 1s infinite ease-in-out alternate;
-  }
-  #Polygon-2 {
-    animation-delay: 0.2s;
-  }
-  #Polygon-3 {
-    animation-delay: 0.4s;
-  }
-  #Polygon-4 {
-    animation-delay: 0.6s;
-  }
-  #Polygon-5 {
-    animation-delay: 0.8s;
-  }
-
-  @keyframes float {
-    100% {
-      transform: translateY(20px);
-    }
-  }
-  @media (max-width: 450px) {
-    svg {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      margin-top: -250px;
-      margin-left: -190px;
-    }
-    .message-box {
-      top: 50%;
-      left: 50%;
-      margin-top: -100px;
-      margin-left: -190px;
-      text-align: center;
-    }
-  }
 }
 
 .travolta {
@@ -90,6 +40,6 @@
   width: 476px;
   height: 490px;
   bottom: 0;
-  left: 650px;
+  left: 450px;
   margin: auto;
 }

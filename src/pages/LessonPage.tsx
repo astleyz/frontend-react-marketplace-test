@@ -1,43 +1,40 @@
 import React, { FC, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import VideocamIcon from '@material-ui/icons/Videocam';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import cx from 'classnames';
-import { api } from '../api/index';
 import Header from '../components/Header/Header';
 import Breadcrumbs from '../components/Breadcrumbs/Breadcrumbs';
 import styles from './LessonPage.module.scss';
 import CommentCard from '../components/Comments/CommentCard';
 import CommentInput from '../components/Comments/CommentInput';
-import useHttp from '../hooks/useHttp';
-import { ILesson } from '../interfaces/course';
-import { setLesson, clearLesson } from '../store/actions';
-import { getLesson } from '../store/selectors';
+import { fetchLesson, clearLesson, resetRequestSpinner } from '../store/actions';
+import { getLesson, getSpinneredError } from '../store/selectors';
 import { Skeleton } from '@material-ui/lab';
 
-const LessonPage: FC<RouteComponentProps> = ({ match, location }) => {
-  const sectionNum = location.search.match(/(?<=section=)\d/g)![0];
-  const lessonNum = location.search.match(/(?<=lesson=)\d/g)![0];
+const LessonPage: FC<RouteComponentProps> = ({ location }) => {
+  const sectionNum = location.search.match(/(?<=section=)\d/g);
+  const lessonNum = location.search.match(/(?<=lesson=)\d/g);
 
-  const { request, data, dispatch, error } = useHttp<ILesson>();
+  const dispatch = useDispatch();
   const lesson = useSelector(getLesson);
+  const spinneredError = useSelector(getSpinneredError);
 
   useEffect(() => {
     const path = `${location.pathname.split(/^\/courses\//g)[1]}${location.search}`;
-    request(() => api.lesson.getLesson(path));
-  }, [request, location.pathname, location.search]);
-
-  useEffect(() => {
-    if (data) {
-      dispatch(setLesson(data));
-    }
-
+    dispatch(fetchLesson(path));
     return () => {
       dispatch(clearLesson());
     };
-  }, [dispatch, data]);
+  }, [location.pathname, location.search, dispatch]);
 
-  if (!match.isExact || error) return null;
+  useEffect(() => {
+    if (spinneredError) throw spinneredError;
+    return () => {
+      dispatch(resetRequestSpinner());
+    };
+  }, [dispatch, spinneredError]);
+
   if (!lesson)
     return (
       <>
@@ -74,10 +71,10 @@ const LessonPage: FC<RouteComponentProps> = ({ match, location }) => {
           <span className={styles.label}>Предпросмотр курса</span>
           <h2 className={styles.title}>{lesson.courseName}</h2>
           <p className={styles.section}>
-            Раздел #{sectionNum} {lesson.sectionName}
+            Раздел #{sectionNum && sectionNum[0]} {lesson.sectionName}
           </p>
           <p className={styles.lesson}>
-            Урок {lessonNum}. {lesson.lessonName}
+            Урок {lessonNum && lessonNum[0]}. {lesson.lessonName}
           </p>
         </div>
 

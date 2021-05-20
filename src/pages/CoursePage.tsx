@@ -5,8 +5,13 @@ import Breadcrumbs from '../components/Breadcrumbs/Breadcrumbs';
 import styles from './CoursePage.module.scss';
 import Exercises from '../components/Exercises/Exercises';
 import { RouteComponentProps } from 'react-router-dom';
-import { fetchCourse, editCourse, clearCourseInStore, removeCourse } from '../store/actions';
-import { getFullCourse, getAuthStatus, getUserAccountData } from '../store/selectors';
+import * as action from '../store/actions';
+import {
+  getFullCourse,
+  getAuthStatus,
+  getUserAccountData,
+  getSpinneredError,
+} from '../store/selectors';
 import { Container, Icon, Button } from '@material-ui/core';
 import Footer from '../components/Footer/Footer';
 import { Skeleton } from '@material-ui/lab';
@@ -29,26 +34,34 @@ const CoursePage: FC<CoursePageProps> = ({ match, history }) => {
   const { id } = match.params;
 
   const course = useSelector(getFullCourse);
+  const spinneredError = useSelector(getSpinneredError);
   const isAuthorized = useSelector(getAuthStatus);
   const user = useSelector(getUserAccountData);
   const [isEditing, setEditing] = useState(false);
 
   const instructorHandleSumbit = (values: InstructorInputs) => {
     const instructor = { names: values.names.split(','), jobs: values.jobs.split(',') };
-    if (course) dispatch(editCourse({ id: course.id, instructor }));
+    if (course) dispatch(action.editCourse({ id: course.id, instructor }));
     setEditing(false);
   };
 
   const handleDeleteCourse = () => {
-    dispatch(removeCourse(id, history));
+    dispatch(action.removeCourse(id, () => history.push('/')));
   };
 
   useEffect(() => {
-    dispatch(fetchCourse(id));
+    dispatch(action.fetchCourse(id));
     return () => {
-      dispatch(clearCourseInStore());
+      dispatch(action.clearCourseInStore());
     };
   }, [dispatch, id]);
+
+  useEffect(() => {
+    if (spinneredError) throw spinneredError;
+    return () => {
+      dispatch(action.resetRequestSpinner());
+    };
+  }, [spinneredError, dispatch]);
 
   if (!course)
     return (
@@ -115,7 +128,7 @@ const CoursePage: FC<CoursePageProps> = ({ match, history }) => {
         </ul>
       </Container>
       <div className="container" style={{ marginTop: '3rem' }}>
-        <Exercises materials={course.materials} dispatch={dispatch} />
+        <Exercises materials={course.materials} />
       </div>
       <Container classes={{ root: styles.instructor }}>
         <Formik
