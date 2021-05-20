@@ -231,6 +231,17 @@ div.instructor {
   }
 }
 
+.removeCourse {
+  width: 65% !important;
+  margin-top: 100px;
+  display: flex !important;
+  justify-content: flex-end !important;
+
+  button:focus {
+    background-color: white !important;
+  }
+}
+
 .html {
   font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto, segoe ui, Helvetica, Arial,
     sans-serif, apple color emoji, segoe ui emoji, segoe ui symbol;

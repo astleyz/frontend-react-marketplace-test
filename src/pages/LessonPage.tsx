@@ -1,10 +1,68 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
+import { RouteComponentProps } from 'react-router-dom';
+import VideocamIcon from '@material-ui/icons/Videocam';
+import { useSelector } from 'react-redux';
+import cx from 'classnames';
+import { api } from '../api/index';
 import Header from '../components/Header/Header';
 import Breadcrumbs from '../components/Breadcrumbs/Breadcrumbs';
 import styles from './LessonPage.module.scss';
-import Comments from '../components/Comments/Comments';
+import CommentCard from '../components/Comments/CommentCard';
+import CommentInput from '../components/Comments/CommentInput';
+import useHttp from '../hooks/useHttp';
+import { ILesson } from '../interfaces/course';
+import { setLesson, clearLesson } from '../store/actions';
+import { getLesson } from '../store/selectors';
+import { Skeleton } from '@material-ui/lab';
 
-const LessonPage: FC = () => {
+const LessonPage: FC<RouteComponentProps> = ({ match, location }) => {
+  const sectionNum = location.search.match(/(?<=section=)\d/g)![0];
+  const lessonNum = location.search.match(/(?<=lesson=)\d/g)![0];
+
+  const { request, data, dispatch, error } = useHttp<ILesson>();
+  const lesson = useSelector(getLesson);
+
+  useEffect(() => {
+    const path = `${location.pathname.split(/^\/courses\//g)[1]}${location.search}`;
+    request(() => api.lesson.getLesson(path));
+  }, [request, location.pathname, location.search]);
+
+  useEffect(() => {
+    if (data) {
+      dispatch(setLesson(data));
+    }
+
+    return () => {
+      dispatch(clearLesson());
+    };
+  }, [dispatch, data]);
+
+  if (!match.isExact || error) return null;
+  if (!lesson)
+    return (
+      <>
+        <Header />
+        <div className="container" style={{ marginTop: '1.2rem' }}>
+          <Breadcrumbs />
+        </div>
+        <div className={styles.main}>
+          <div className={cx('container', styles.container)}>
+            <Skeleton className={styles.label} animation="wave" width="30%" />
+            <Skeleton className={styles.title} animation="wave" width="80%" />
+            <Skeleton className={styles.section} animation="wave" width="50%" />
+            <Skeleton className={styles.lesson} animation="wave" width="40%" />
+          </div>
+          <Skeleton
+            className={styles.videozone}
+            animation="wave"
+            variant="rect"
+            width={560}
+            height={315}
+          />
+        </div>
+      </>
+    );
+
   return (
     <>
       <Header />
@@ -12,34 +70,36 @@ const LessonPage: FC = () => {
         <Breadcrumbs />
       </div>
       <div className={styles.main}>
-        <div className="container" style={{ marginTop: '3rem' }}>
-          <div className={styles.description}>
-            Этот курс позволит вам разобраться с языком Golang. Вы узнаете как он работает. Чем
-            отличается от других языков программирования. Курс особенно полезен, если вы уже знаете
-            какой-то язык, хотя бы на теоритическом уровне. Многие уроки подкреплены примерами. Я
-            рекомендую повторять эти примеры. А если вы хотите лучше разобраться с языком, то
-            попробовать делать тоже самое, но придумать свой пример для практики. На основании
-            полученных знаний.
-          </div>
+        <div className={cx('container', styles.container)}>
+          <span className={styles.label}>Предпросмотр курса</span>
+          <h2 className={styles.title}>{lesson.courseName}</h2>
+          <p className={styles.section}>
+            Раздел #{sectionNum} {lesson.sectionName}
+          </p>
+          <p className={styles.lesson}>
+            Урок {lessonNum}. {lesson.lessonName}
+          </p>
         </div>
 
         <div className={styles.videozone}>
-          <iframe
-            width="560"
-            height="315"
-            src="https://www.youtube.com/embed/p2b2Vb-cYCs"
-            title="YouTube video player"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          ></iframe>
-        </div>
-        <div className={styles.links}>
-          <p>Чтение данных из файла</p>
-          <p>Высчитываем среднее значение</p>
+          <div className={styles.img}>
+            <VideocamIcon />
+            <h1>
+              <span>Now video is not available</span>
+            </h1>
+          </div>
         </div>
         <div className="container" style={{ marginTop: '3rem' }}>
-          <Comments />
+          <h1 style={{ fontSize: '19px', marginBottom: '30px' }}>
+            Комментарии {lesson.comments.length || ''}
+          </h1>
+          <CommentInput />
+          {lesson.comments
+            .concat()
+            .reverse()
+            .map((comment, i) => (
+              <CommentCard key={`${comment.ownerId.login}${i}`} comment={comment} />
+            ))}
         </div>
       </div>
     </>

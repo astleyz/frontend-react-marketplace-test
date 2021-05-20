@@ -1,15 +1,19 @@
 import {
   ADD_COURSE,
-  REMOVE_ONE_COURSE,
+  CLEAR_ONE_COURSE,
   EDIT_ONE_COURSE,
-  RESET_FETCHED_COURSES,
+  CLEAR_FETCHED_COURSES,
   SAVE_COURSES,
   FETCH_COURSES,
   FETCH_ONE_COURSE,
   SAVE_ONE_COURSE,
+  REMOVE_ONE_COURSE,
+  SET_LESSON,
+  CLEAR_LESSON,
 } from '../types';
-import { ILightCourse, IFullCourse, PartialFullCourse } from '../../interfaces/course';
+import { ILightCourse, IFullCourse, PartialFullCourse, ILesson } from '../../interfaces/course';
 import { Action } from 'redux';
+import { History } from 'history';
 
 // Types
 export type addCourseAction = {
@@ -33,9 +37,20 @@ export type editCourseAction = {
   course: PartialFullCourse;
 };
 
+export type removeCourseAction = {
+  type: typeof REMOVE_ONE_COURSE;
+  id: string;
+  history: History;
+};
+
 export type saveCoursesAction = {
   type: typeof SAVE_COURSES;
   payload: ILightCourse[];
+};
+
+export type setLessonAction = {
+  type: typeof SET_LESSON;
+  lesson: ILesson;
 };
 
 // Actions
@@ -64,8 +79,14 @@ export const editCourse = (course: PartialFullCourse): editCourseAction => ({
   course,
 });
 
-export const removeCourse = (): Action<typeof REMOVE_ONE_COURSE> => ({
+export const clearCourseInStore = (): Action<typeof CLEAR_ONE_COURSE> => ({
+  type: CLEAR_ONE_COURSE,
+});
+
+export const removeCourse = (id: string, history: History): removeCourseAction => ({
   type: REMOVE_ONE_COURSE,
+  id,
+  history,
 });
 
 export const saveAllCourses = (payload: ILightCourse[]): saveCoursesAction => ({
@@ -73,6 +94,15 @@ export const saveAllCourses = (payload: ILightCourse[]): saveCoursesAction => ({
   payload,
 });
 
-export const resetFetchedCourses = (): Action<typeof RESET_FETCHED_COURSES> => ({
-  type: RESET_FETCHED_COURSES,
+export const clearFetchedCourses = (): Action<typeof CLEAR_FETCHED_COURSES> => ({
+  type: CLEAR_FETCHED_COURSES,
+});
+
+export const setLesson = (lesson: ILesson): setLessonAction => ({
+  type: SET_LESSON,
+  lesson,
+});
+
+export const clearLesson = (): Action<typeof CLEAR_LESSON> => ({
+  type: CLEAR_LESSON,
 });

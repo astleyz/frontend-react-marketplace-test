@@ -16,8 +16,10 @@ export type UserActionTypes = user.saveUserFullNameAction | auth.clearTokenActio
 export type CourseActionTypes =
   | course.saveCourseAction
   | course.saveCoursesAction
-  | ReturnType<typeof course.removeCourse>
-  | ReturnType<typeof course.resetFetchedCourses>;
+  | ReturnType<typeof course.clearCourseInStore>
+  | ReturnType<typeof course.clearFetchedCourses>
+  | course.setLessonAction
+  | ReturnType<typeof course.clearLesson>;
 
 export type RequestSpinnerActionTypes =
   | ReturnType<typeof spinner.startFetching>

@@ -1,0 +1,55 @@
+@import '../../styles/vars.module.scss';
+
+.paper {
+  padding: 10px;
+  margin-bottom: 20px !important;
+  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.4) !important;
+  display: flex;
+  flex-direction: column;
+}
+
+.grid {
+  h4 {
+    margin: 0 0 15px 0;
+    text-align: left;
+    color: rgb(37, 9, 160);
+  }
+
+  p:nth-of-type(1) {
+    text-align: left;
+  }
+
+  p:nth-of-type(2) {
+    text-align: left;
+    color: gray;
+    margin-top: 10px;
+  }
+}
+
+.avatarInput {
+  width: 82px !important;
+  height: 82px !important;
+  background-color: orange !important;
+  font-size: 40px !important;
+}
+
+.textarea {
+  border: 1px solid rgb(197, 195, 195) !important;
+  font-size: 16px;
+  padding: 10px !important;
+  resize: none !important;
+}
+
+.button,
+.button:focus {
+  background-color: #546e7a !important;
+  color: #fff !important;
+  align-self: flex-end !important;
+  margin: 8px 10px !important;
+  height: 28px !important;
+}
+
+.button:hover {
+  background-color: darken(#546e7a, 10%) !important;
+  color: #fff !important;
+}

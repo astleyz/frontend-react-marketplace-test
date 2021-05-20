@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import Snackbar from './components/Snackbar/Snackbar';
 import CoursePage from './pages/CoursePage';
 import LessonPage from './pages/LessonPage';
-import NotFound from './pages/NotFound';
+import NotFound from './components/NotFound/NotFound';
 import useAuth from './hooks/useAuth';
 import HomePage from './pages/HomePage';
 

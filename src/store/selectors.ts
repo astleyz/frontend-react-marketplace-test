@@ -12,6 +12,7 @@ export const getUserAccountData = (state: RootState) => state.user;
 
 export const getFullCourse = (state: RootState) => state.course.course;
 export const getFetchedCourses = (state: RootState) => state.course.fetchedCourses;
+export const getLesson = (state: RootState) => state.course.lesson;
 
 export const getIsFetchingSpinner = (state: RootState) => state.spinnerRequest.isFetching;
 export const getSpinneredData = (state: RootState) => state.spinnerRequest.data;

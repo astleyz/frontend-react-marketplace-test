@@ -1,9 +1,17 @@
 import { put } from 'redux-saga/effects';
 import { api } from '../../api';
-import { addCourseAction, saveAllCourses, saveCourse, setSnackbar } from '../actions';
 import { ILightCourse, IFullCourse } from '../../interfaces/course';
 import { makeRequestWithSpinner } from './spinnerRequest.saga';
-import { editCourseAction, fetchCourse } from '../actions/course.action';
+import {
+  addCourseAction,
+  editCourseAction,
+  removeCourseAction,
+  saveAllCourses,
+  saveCourse,
+  setSnackbar,
+  fetchCourse,
+  clearCourseInStore,
+} from '../actions';
 import {
   startFetching,
   stopFetching,
@@ -14,7 +22,7 @@ import {
 export function* addCourseWorker({ link, callback }: addCourseAction): Generator {
   const options = {
     reset: resetRequestSpinner,
-    fetcher: api.courses.addCourseToUser,
+    fetcher: api.course.addCourseToUser,
     data: { link },
     startFetching,
     stopFetching,
@@ -30,7 +38,7 @@ export function* addCourseWorker({ link, callback }: addCourseAction): Generator
 
 export function* fetchAllCoursesWorker(): Generator {
   const options = {
-    fetcher: api.courses.getAllCourses,
+    fetcher: api.course.getAllCourses,
     fillFetched: saveAllCourses,
   };
 
@@ -41,7 +49,7 @@ export function* fetchAllCoursesWorker(): Generator {
 
 export function* fetchCourseWorker({ id }: ReturnType<typeof fetchCourse>): Generator {
   const options = {
-    fetcher: api.courses.getCourse,
+    fetcher: api.course.getCourse,
     data: id,
     fillFetched: saveCourse,
   };
@@ -53,12 +61,25 @@ export function* fetchCourseWorker({ id }: ReturnType<typeof fetchCourse>): Gene
 
 export function* editCourseWorker({ course }: editCourseAction): Generator {
   const options = {
-    fetcher: api.courses.patchCourse,
+    fetcher: api.course.patchCourse,
     data: course,
     fillFetched: saveCourse,
   };
 
   try {
     yield makeRequestWithSpinner<IFullCourse>(options);
+  } catch (e) {}
+}
+
+export function* removeCourseWorker({ id, history }: removeCourseAction): Generator {
+  const options = {
+    fetcher: api.course.removeCourse,
+    data: id,
+  };
+
+  try {
+    yield makeRequestWithSpinner<null>(options);
+    yield put(clearCourseInStore());
+    history.push('/');
   } catch (e) {}
 }

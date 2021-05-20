@@ -14,6 +14,7 @@ export function* courseWatcher(): SagaIterator {
   yield takeEvery(type.FETCH_COURSES, course.fetchAllCoursesWorker);
   yield takeEvery(type.FETCH_ONE_COURSE, course.fetchCourseWorker);
   yield takeEvery(type.EDIT_ONE_COURSE, course.editCourseWorker);
+  yield takeEvery(type.REMOVE_ONE_COURSE, course.removeCourseWorker);
 }
 
 export default function* rootSaga(): SagaIterator {

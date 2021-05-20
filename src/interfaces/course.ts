@@ -41,13 +41,6 @@ export interface IFullCourse {
           {
             name: string;
             length: string;
-            comments: [
-              {
-                name: string;
-                date: string;
-                text: string;
-              }
-            ];
           }
         ];
       }
@@ -61,5 +54,21 @@ export interface IFullCourse {
     aboutme: string;
   };
 }
+
+export interface ILesson {
+  courseName: string;
+  sectionName: string;
+  lessonName: string;
+  comments: IComment[];
+}
+
+export type IComment = {
+  ownerId: {
+    login: string;
+    img: string;
+  };
+  date: string;
+  content: string;
+};
 
 export type PartialFullCourse = { id: string } & RecursivePartial<IFullCourse>;

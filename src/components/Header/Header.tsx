@@ -1,5 +1,10 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Tooltip, Zoom, Button, Dialog, DialogActions, DialogContent } from '@material-ui/core';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useTheme } from '@material-ui/core/styles';
+import { Form, Formik, Field } from 'formik';
+import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import cx from 'classnames';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
@@ -13,11 +18,19 @@ import { IUserData } from '../../store/reducers/user.reducer';
 import { saveUserFullName, clearToken } from '../../store/actions';
 import Search from '../Search/Search';
 
+const useStyles = makeStyles(() => ({
+  tooltip: {
+    fontSize: '11px',
+    marginTop: '5px',
+  },
+}));
+
 const Header: FC = () => {
+  const classes = useStyles();
   const dispatch = useDispatch();
   const isAuthorized: boolean = useSelector(getAuthStatus);
-  const { request, loading, data } = useHttp<Pick<IUserData, 'name' | 'img'>>();
   const user: Partial<IUserData> | null = useSelector(getUserAccountData);
+  const { request, loading, data } = useHttp<Pick<IUserData, 'name' | 'img'>>();
 
   useEffect(() => {
     if (isAuthorized && !loading && !user) {
@@ -31,10 +44,12 @@ const Header: FC = () => {
     }
   }, [dispatch, data]);
 
-  const [isAuthOpen, setAuthOpen] = React.useState(false);
-  const [isRegisterOpen, setRegisterOpen] = React.useState(false);
-  const [isImgLoaded, setImgLoaded] = React.useState(false);
+  const [isNameEditing, setNameEditing] = useState(false);
+  const [isAuthOpen, setAuthOpen] = useState(false);
+  const [isRegisterOpen, setRegisterOpen] = useState(false);
+  const [isImgLoaded, setImgLoaded] = useState(false);
 
+  const handleChangeName = () => setNameEditing(prev => !prev);
   const handleAuthOpen = () => setAuthOpen(true);
   const handleAuthClose = () => setAuthOpen(false);
   const handleRegisterOpen = () => setRegisterOpen(true);
@@ -64,14 +79,24 @@ const Header: FC = () => {
             <ul className="right" style={{ display: 'flex' }}>
               <li className={styles.userBlock}>
                 <div className={styles.imgBox}>
-                  {!isImgLoaded ? user?.name?.charAt(0) : ''}
+                  {!isImgLoaded ? user?.name?.charAt(0).toUpperCase() : ''}
                   <img
                     src={user.img}
                     onError={(e: any) => (e.target.style.display = 'none')}
                     onLoad={() => setImgLoaded(true)}
                   />
                 </div>
-                <div className={styles.name}>{user.name}</div>
+                <Tooltip
+                  title="Нажми чтобы изменить имя"
+                  TransitionComponent={Zoom}
+                  arrow
+                  classes={{ tooltip: classes.tooltip }}
+                >
+                  <div className={styles.name} onClick={handleChangeName}>
+                    {user.name}
+                  </div>
+                </Tooltip>
+                <EditName user={user} isOpen={isNameEditing} onClose={handleChangeName} />
               </li>
               <li className={styles.exit}>
                 <a onClick={handleLogout}>
@@ -96,6 +121,47 @@ const Header: FC = () => {
         </div>
       </nav>
     </header>
+  );
+};
+
+type EditNameProps = {
+  user: Partial<IUserData>;
+  isOpen: boolean;
+  onClose: () => void;
+};
+
+const EditName: FC<EditNameProps> = ({ user, isOpen, onClose }) => {
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const { request, data, dispatch } = useHttp<Pick<IUserData, 'name' | 'img'>>();
+
+  const handleChangeName = (values: Pick<IUserData, 'name'>) => {
+    request(() => api.user.changeFullName(values));
+    onClose();
+  };
+
+  useEffect(() => {
+    if (data) dispatch(saveUserFullName(data));
+  }, [dispatch, data]);
+
+  return (
+    <Dialog open={isOpen} onClose={onClose} fullScreen={fullScreen}>
+      <Formik initialValues={{ name: user.name! }} onSubmit={handleChangeName}>
+        <Form>
+          <DialogContent>
+            <Field name="name" className="materialize-textarea" spellCheck="false" />
+          </DialogContent>
+          <DialogActions className={styles.buttons}>
+            <Button autoFocus color="primary" type="submit">
+              Сохранить
+            </Button>
+            <Button onClick={onClose} color="primary" autoFocus>
+              Отмена
+            </Button>
+          </DialogActions>
+        </Form>
+      </Formik>
+    </Dialog>
   );
 };
 

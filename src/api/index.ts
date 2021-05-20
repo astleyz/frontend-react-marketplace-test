@@ -2,7 +2,7 @@ import { AxiosResponse } from 'axios';
 import { ILoginProps, IRegisterProps, AuthResponse } from '../interfaces/auth';
 import { IUserData } from '../store/reducers/user.reducer';
 import instance from './axios-interceptors';
-import { ILightCourse, IFullCourse, PartialFullCourse } from '../interfaces/course';
+import { ILightCourse, IFullCourse, PartialFullCourse, ILesson } from '../interfaces/course';
 
 export type FetchDataType<T = any> = Promise<AxiosResponse<T>>;
 
@@ -15,12 +15,20 @@ export type APIFetchDataType = {
   };
   user: {
     getFullName: () => FetchDataType<Pick<IUserData, 'name' | 'img'>>;
+    changeFullName: (
+      name: Pick<IUserData, 'name'>
+    ) => FetchDataType<Pick<IUserData, 'name' | 'img'>>;
   };
-  courses: {
+  course: {
     addCourseToUser: (link: string) => FetchDataType<null>;
     getCourse: (id: string) => FetchDataType<IFullCourse>;
     patchCourse: (course: PartialFullCourse) => FetchDataType<IFullCourse>;
+    removeCourse: (id: string) => FetchDataType<null>;
     getAllCourses: () => FetchDataType<ILightCourse[]>;
+  };
+  lesson: {
+    getLesson: (path: string) => FetchDataType<ILesson>;
+    sendComment: (path: string, data: string) => FetchDataType<null>;
   };
 };
 
@@ -33,11 +41,17 @@ export const api: APIFetchDataType = Object.freeze({
   },
   user: {
     getFullName: () => instance.get('/user?name=true&img=true'),
+    changeFullName: (name: Pick<IUserData, 'name'>) => instance.put('/user', name),
   },
-  courses: {
+  course: {
     addCourseToUser: (link: string) => instance.post('/courses/create', link),
     getCourse: (id: string) => instance.get(`/courses/${id}`),
     patchCourse: (course: PartialFullCourse) => instance.patch(`/courses/${course.id}`, course),
+    removeCourse: (id: string) => instance.delete(`/courses/${id}`),
     getAllCourses: () => instance.get('/courses'),
+  },
+  lesson: {
+    getLesson: (path: string) => instance.get(`/courses/${path}`),
+    sendComment: (path: string, comment: string) => instance.post(`/courses/${path}`, { comment }),
   },
 });

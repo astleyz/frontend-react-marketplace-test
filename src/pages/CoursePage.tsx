@@ -5,7 +5,7 @@ import Breadcrumbs from '../components/Breadcrumbs/Breadcrumbs';
 import styles from './CoursePage.module.scss';
 import Exercises from '../components/Exercises/Exercises';
 import { RouteComponentProps } from 'react-router-dom';
-import { fetchCourse, editCourse, removeCourse } from '../store/actions';
+import { fetchCourse, editCourse, clearCourseInStore, removeCourse } from '../store/actions';
 import { getFullCourse, getAuthStatus, getUserAccountData } from '../store/selectors';
 import { Container, Icon, Button } from '@material-ui/core';
 import Footer from '../components/Footer/Footer';
@@ -24,7 +24,7 @@ type InstructorInputs = {
   jobs: string;
 };
 
-const CoursePage: FC<CoursePageProps> = ({ match }) => {
+const CoursePage: FC<CoursePageProps> = ({ match, history }) => {
   const dispatch = useDispatch();
   const { id } = match.params;
 
@@ -39,10 +39,14 @@ const CoursePage: FC<CoursePageProps> = ({ match }) => {
     setEditing(false);
   };
 
+  const handleDeleteCourse = () => {
+    dispatch(removeCourse(id, history));
+  };
+
   useEffect(() => {
     dispatch(fetchCourse(id));
     return () => {
-      dispatch(removeCourse());
+      dispatch(clearCourseInStore());
     };
   }, [dispatch, id]);
 
@@ -150,7 +154,7 @@ const CoursePage: FC<CoursePageProps> = ({ match }) => {
 
             {isEditing && isAuthorized && user?.name === course.ownerId.login ? (
               <>
-                <Field name="names" className="materialize-textarea" />
+                <Field name="names" className="materialize-textarea" autoFocus />
                 <Field name="jobs" className="materialize-textarea" />
               </>
             ) : (
@@ -172,6 +176,14 @@ const CoursePage: FC<CoursePageProps> = ({ match }) => {
           />
         </div>
       </Container>
+      {isAuthorized && user?.name === course.ownerId.login ? (
+        <Container className={styles.removeCourse}>
+          <Button variant="outlined" color="secondary" size="large" onClick={handleDeleteCourse}>
+            Удалить курс
+          </Button>
+        </Container>
+      ) : null}
+
       <Footer />
     </>
   );

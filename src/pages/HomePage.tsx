@@ -6,7 +6,7 @@ import Footer from '../components/Footer/Footer';
 import Card from '../components/Card/Card';
 import { getFetchedCourses } from '../store/selectors';
 import { ILightCourse } from '../interfaces/course';
-import { fetchAllCourses, resetFetchedCourses } from '../store/actions';
+import { fetchAllCourses, clearFetchedCourses } from '../store/actions';
 import { Skeleton } from '@material-ui/lab';
 
 const HomePage: FC = () => {
@@ -16,7 +16,7 @@ const HomePage: FC = () => {
   useEffect(() => {
     dispatch(fetchAllCourses());
     return () => {
-      dispatch(resetFetchedCourses());
+      dispatch(clearFetchedCourses());
     };
   }, [dispatch]);
 

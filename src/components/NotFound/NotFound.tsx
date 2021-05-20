@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import styles from './NotFound.module.scss';
 import cx from 'classnames';
 
-const NotFound: FC = () => {
+const NotFound: FC<{ code?: number; text?: string }> = ({ code, text }) => {
   return (
     <div className={cx('teal lighten-2', styles.box)}>
       <svg
@@ -47,8 +47,8 @@ const NotFound: FC = () => {
         </g>
       </svg>
       <div className={styles.messageBox}>
-        <h1>404</h1>
-        <p>Page not found</p>
+        <h1>{code || 404}</h1>
+        <p>{text || 'Not Found'}</p>
       </div>
       <img src="https://pm2.io/assets/travolta.gif" className={styles.travolta} alt="" />
     </div>

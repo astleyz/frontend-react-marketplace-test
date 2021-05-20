@@ -30,6 +30,7 @@ instance.interceptors.request.use(
   async request => {
     const token = store.getState().auth.token;
     if (token) request.headers['Authorization'] = token;
+
     if (token && !checkIsTokenValid(token) && !isTokenRefreshing) {
       isTokenRefreshing = true;
       const response = await api.auth.refreshTokens();
@@ -41,7 +42,6 @@ instance.interceptors.request.use(
     return request;
   },
   error => {
-    console.dir(error);
     store.dispatch(setSnackbar(true, 'error', error));
   }
 );
