@@ -8,6 +8,7 @@ import { getFetchedCourses } from '../store/selectors';
 import { ILightCourse } from '../interfaces/course';
 import { fetchAllCourses, clearFetchedCourses } from '../store/actions';
 import { Skeleton } from '@material-ui/lab';
+import { Container } from '@material-ui/core';
 
 const HomePage: FC = () => {
   const dispatch = useDispatch();
@@ -25,7 +26,7 @@ const HomePage: FC = () => {
       <Header />
       <div className="container" style={{ marginTop: '2rem' }}>
         <Breadcrumbs />
-        {!lightCourses.length
+        {!lightCourses
           ? new Array(3)
               .fill('')
               .map((_, i) => (
@@ -38,7 +39,23 @@ const HomePage: FC = () => {
                   animation="wave"
                 />
               ))
-          : lightCourses.map((course: ILightCourse) => <Card key={course.title} course={course} />)}
+          : null}
+        {lightCourses && !lightCourses.length ? (
+          <Container
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              fontSize: '20px',
+              marginTop: '55px',
+            }}
+          >
+            Курсов пока нет
+          </Container>
+        ) : null}
+        {lightCourses && lightCourses.length
+          ? lightCourses.map((course: ILightCourse) => <Card key={course.title} course={course} />)
+          : null}
       </div>
       <Footer />
     </div>

@@ -1,10 +1,15 @@
 import { FC, useEffect, useState } from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { Container, Icon, Button } from '@material-ui/core';
+import { Skeleton } from '@material-ui/lab';
+import LockIcon from '@material-ui/icons/Lock';
+import { Form, Formik, Field } from 'formik';
+import cx from 'classnames';
 import Header from '../components/Header/Header';
 import Breadcrumbs from '../components/Breadcrumbs/Breadcrumbs';
 import styles from './CoursePage.module.scss';
 import Exercises from '../components/Exercises/Exercises';
-import { RouteComponentProps } from 'react-router-dom';
 import * as action from '../store/actions';
 import {
   getFullCourse,
@@ -12,11 +17,8 @@ import {
   getUserAccountData,
   getSpinneredError,
 } from '../store/selectors';
-import { Container, Icon, Button } from '@material-ui/core';
 import Footer from '../components/Footer/Footer';
-import { Skeleton } from '@material-ui/lab';
-import cx from 'classnames';
-import { Form, Formik, Field } from 'formik';
+import RolePopup from '../components/RolePopup/RolePopup';
 
 interface CoursePageProps extends RouteComponentProps {
   match: RouteComponentProps['match'] & {
@@ -38,6 +40,11 @@ const CoursePage: FC<CoursePageProps> = ({ match, history }) => {
   const isAuthorized = useSelector(getAuthStatus);
   const user = useSelector(getUserAccountData);
   const [isEditing, setEditing] = useState(false);
+  const [makingPrivate, setPrivate] = useState(false);
+
+  const handleSetPrivate = () => {
+    setPrivate(prev => !prev);
+  };
 
   const instructorHandleSumbit = (values: InstructorInputs) => {
     const instructor = { names: values.names.split(','), jobs: values.jobs.split(',') };
@@ -190,12 +197,21 @@ const CoursePage: FC<CoursePageProps> = ({ match, history }) => {
         </div>
       </Container>
       {isAuthorized && user?.name === course.ownerId.login ? (
-        <Container className={styles.removeCourse}>
+        <Container className={styles.controlButtons}>
+          <Button
+            variant="outlined"
+            startIcon={<LockIcon />}
+            size="large"
+            onClick={handleSetPrivate}
+          >
+            Сделать уроки приватными
+          </Button>
           <Button variant="outlined" color="secondary" size="large" onClick={handleDeleteCourse}>
             Удалить курс
           </Button>
         </Container>
       ) : null}
+      <RolePopup isOpen={makingPrivate} onClose={handleSetPrivate} courseId={course.id} />
 
       <Footer />
     </>

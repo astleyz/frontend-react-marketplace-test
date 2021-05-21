@@ -231,13 +231,20 @@ div.instructor {
   }
 }
 
-.removeCourse {
+.controlButtons {
   width: 65% !important;
   margin-top: 100px;
   display: flex !important;
   justify-content: flex-end !important;
 
-  button:focus {
+  button:nth-of-type(1),
+  button:nth-of-type(1):focus {
+    background-color: #3faa98 !important;
+    color: #fff !important;
+    margin-right: 80px;
+  }
+
+  button:nth-of-type(2):focus {
     background-color: white !important;
   }
 }

@@ -72,3 +72,6 @@ export type IComment = {
 };
 
 export type PartialFullCourse = { id: string } & RecursivePartial<IFullCourse>;
+export type EditValues =
+  | PartialFullCourse
+  | ({ id: string } & { private: boolean; accessedUser: string });

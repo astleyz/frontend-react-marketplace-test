@@ -11,7 +11,7 @@ interface State {
   e: AxiosError | null;
 }
 
-class ErrorBoundary extends Component<Props, State> {
+class BoundaryError extends Component<Props, State> {
   state: State = {
     hasError: false,
     e: null,
@@ -35,4 +35,4 @@ class ErrorBoundary extends Component<Props, State> {
   }
 }
 
-export default ErrorBoundary;
+export default BoundaryError;

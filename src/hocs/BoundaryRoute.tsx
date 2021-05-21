@@ -1,6 +1,6 @@
 import { FC, Suspense } from 'react';
 import { Route, RouteProps } from 'react-router-dom';
-import BoundaryError from '../pages/ErrorBoundary';
+import BoundaryError from './BoundaryError';
 
 interface BoundaryRouteProps extends RouteProps {
   component?: FC<any>;

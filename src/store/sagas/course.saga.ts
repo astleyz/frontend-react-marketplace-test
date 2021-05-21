@@ -63,10 +63,10 @@ export function* fetchCourseWorker({ id }: ReturnType<typeof fetchCourse>): Gene
   }
 }
 
-export function* editCourseWorker({ course }: editCourseAction): Generator {
+export function* editCourseWorker({ editOptions }: editCourseAction): Generator {
   const options = {
     fetcher: api.course.patchCourse,
-    data: course,
+    data: editOptions,
     fillFetched: saveCourse,
   };
 

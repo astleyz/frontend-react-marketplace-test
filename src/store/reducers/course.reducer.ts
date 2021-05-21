@@ -13,13 +13,13 @@ import { ILightCourse, IFullCourse, ILesson } from '../../interfaces/course';
 type CourseState = {
   course: IFullCourse | null;
   lesson: ILesson | null;
-  fetchedCourses: ILightCourse[];
+  fetchedCourses: ILightCourse[] | null;
 };
 
 const initialState: CourseState = {
   course: null,
   lesson: null,
-  fetchedCourses: [],
+  fetchedCourses: null,
 };
 
 export const courseReducer: Reducer<CourseState, CourseActionTypes> = (

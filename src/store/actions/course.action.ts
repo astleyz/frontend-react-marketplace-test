@@ -12,7 +12,7 @@ import {
   SET_LESSON,
   CLEAR_LESSON,
 } from '../types';
-import { ILightCourse, IFullCourse, PartialFullCourse, ILesson } from '../../interfaces/course';
+import { ILightCourse, IFullCourse, EditValues, ILesson } from '../../interfaces/course';
 import { Action } from 'redux';
 
 // Types
@@ -34,7 +34,7 @@ export type fetchCourseAction = {
 
 export type editCourseAction = {
   type: typeof EDIT_ONE_COURSE;
-  course: PartialFullCourse;
+  editOptions: EditValues;
 };
 
 export type removeCourseAction = {
@@ -79,9 +79,9 @@ export const saveCourse = (payload: IFullCourse): saveCourseAction => ({
   payload,
 });
 
-export const editCourse = (course: PartialFullCourse): editCourseAction => ({
+export const editCourse = (editOptions: EditValues): editCourseAction => ({
   type: EDIT_ONE_COURSE,
-  course,
+  editOptions,
 });
 
 export const clearCourseInStore = (): Action<typeof CLEAR_ONE_COURSE> => ({

@@ -9,6 +9,7 @@ const useHttp = <T>() => {
   const [error, setError] = useState(null);
 
   const request = useCallback(async (request: () => FetchDataType<T>): Promise<void> => {
+    setError(null);
     setLoading(true);
     try {
       const response = await request();

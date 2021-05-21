@@ -150,14 +150,14 @@ const EditName: FC<EditNameProps> = ({ user, isOpen, onClose }) => {
       <Formik initialValues={{ name: user.name }} onSubmit={handleChangeName}>
         <Form>
           <DialogContent>
-            <Field name="name" className="materialize-textarea" spellCheck="false" />
+            <Field name="name" className="materialize-textarea" spellCheck="false" autoFocus />
           </DialogContent>
           <DialogActions className={styles.buttons}>
-            <Button autoFocus color="primary" type="submit">
-              Сохранить
-            </Button>
-            <Button onClick={onClose} color="primary" autoFocus>
+            <Button onClick={onClose} color="primary">
               Отмена
+            </Button>
+            <Button color="primary" type="submit">
+              Сохранить
             </Button>
           </DialogActions>
         </Form>

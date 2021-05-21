@@ -172,7 +172,11 @@ const formikHocProps = {
   }),
   validationSchema: () =>
     Yup.object({
-      login: Yup.string().min(3, 'Минимум 3 символа').required('Введите логин'),
+      login: Yup.string()
+        .min(3, 'Минимум 3 символа')
+        .max(20, 'Максимум 20 символов')
+        .matches(/(^[^\s]+$)/, 'Логин не должен содержать пробелы')
+        .required('Введите логин'),
       email: Yup.string().email('Введите валидный email').required('Это обязательное поле'),
       password: Yup.string().min(5, 'Минимум 5 символов').required('Это обязательное поле'),
       repeatPassword: Yup.string()
