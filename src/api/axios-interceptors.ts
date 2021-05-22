@@ -46,14 +46,14 @@ instance.interceptors.request.use(
   }
 );
 
-// instance.interceptors.response.use(
-//   res => res,
-//   err => {
-//     if (err.response.status === 404) {
-//       return false;
-//     }
-//     throw err;
-//   }
-// );
+instance.interceptors.response.use(
+  res => res.data,
+  err => {
+    if (err && err.response && err.response.data) {
+      err.response.data = err.response.data.errors;
+    }
+    throw err;
+  }
+);
 
 export default instance;

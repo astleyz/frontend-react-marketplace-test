@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 const Footer: FC = () => {
   return (
-    <footer className="page-footer teal lighten-2" style={{ marginTop: '10rem' }}>
+    <footer className="page-footer teal lighten-2" style={{ marginTop: '5rem' }}>
       <div className="container">
         <div className="row">
           <div className="col l6 s12">

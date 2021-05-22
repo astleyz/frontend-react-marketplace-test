@@ -2,7 +2,7 @@ import { AxiosResponse } from 'axios';
 import { ILoginProps, IRegisterProps, AuthResponse } from '../interfaces/auth';
 import { IUserData } from '../store/reducers/user.reducer';
 import instance from './axios-interceptors';
-import { ILightCourse, IFullCourse, ILesson, EditValues } from '../interfaces/course';
+import { IFullCourse, ILesson, EditValues, PageType } from '../interfaces/course';
 
 export type FetchDataType<T = any> = Promise<AxiosResponse<T>>;
 
@@ -22,7 +22,7 @@ export type APIFetchDataType = {
   };
   course: {
     addCourseToUser: (link: string) => FetchDataType<null>;
-    getAllCourses: () => FetchDataType<ILightCourse[]>;
+    getAllCourses: (query: string) => FetchDataType<PageType>;
     getCourse: (id: string) => FetchDataType<IFullCourse>;
     patchCourse: (options: EditValues) => FetchDataType<IFullCourse>;
     removeCourse: (id: string) => FetchDataType<null>;
@@ -48,7 +48,7 @@ export const api: APIFetchDataType = Object.freeze({
   },
   course: {
     addCourseToUser: (link: string) => instance.post('/courses/create', link),
-    getAllCourses: () => instance.get('/courses'),
+    getAllCourses: (query?: string) => instance.get(`/courses${query}`),
     getCourse: (id: string) => instance.get(`/courses/${id}`),
     patchCourse: (options: EditValues) => instance.patch(`/courses/${options.id}`, options),
     removeCourse: (id: string) => instance.delete(`/courses/${id}`),

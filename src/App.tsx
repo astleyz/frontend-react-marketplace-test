@@ -18,8 +18,8 @@ const App: FC = () => {
       <Snackbar />
       <BrowserRouter>
         <Switch>
-          <Route path="/" exact component={HomePage} />
-          <Redirect path="/courses" exact to="/" />
+          <Redirect path="/" exact to="/courses" />
+          <Route path="/courses" exact component={HomePage} />
           <BoundaryRoute path="/courses/:id" exact suspense component={CoursePage} />
           <BoundaryRoute path="/courses/:id/:lesson" exact suspense component={LessonPage} />
           <Route component={NotFound} />

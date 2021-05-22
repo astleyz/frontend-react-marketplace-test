@@ -46,6 +46,7 @@ const Header: FC = () => {
   const [isAuthOpen, setAuthOpen] = useState(false);
   const [isRegisterOpen, setRegisterOpen] = useState(false);
   const [isImgLoaded, setImgLoaded] = useState(false);
+  const [isAvatarHovered, setAvatarHovered] = useState(false);
 
   const handleChangeName = () => setNameEditing(prev => !prev);
   const handleAuthOpen = () => setAuthOpen(true);
@@ -57,6 +58,7 @@ const Header: FC = () => {
       await api.auth.logout();
       await new Promise(r => setTimeout(() => r(null), 200));
       dispatch(clearToken());
+      setImgLoaded(false);
     } catch (e) {
       if (e && e.response && e.response.status && e.response.status === 401) {
         await new Promise(r => setTimeout(() => r(null), 200));
@@ -87,8 +89,12 @@ const Header: FC = () => {
           {isAuthorized && user ? (
             <ul className="right" style={{ display: 'flex' }}>
               <li className={styles.userBlock}>
-                <div className={styles.imgBox}>
-                  {!isImgLoaded ? user?.name?.charAt(0).toUpperCase() : ''}
+                <div
+                  className={styles.imgBox}
+                  onMouseEnter={() => setAvatarHovered(true)}
+                  onMouseLeave={() => setAvatarHovered(false)}
+                >
+                  {!isImgLoaded && !isAvatarHovered ? user?.name?.charAt(0).toUpperCase() : ''}
                   <img
                     src={user.img}
                     onError={(e: any) => (e.target.style.display = 'none')}

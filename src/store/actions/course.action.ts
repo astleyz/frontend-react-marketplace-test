@@ -12,7 +12,7 @@ import {
   SET_LESSON,
   CLEAR_LESSON,
 } from '../types';
-import { ILightCourse, IFullCourse, EditValues, ILesson } from '../../interfaces/course';
+import { PageType, IFullCourse, EditValues, ILesson } from '../../interfaces/course';
 import { Action } from 'redux';
 
 // Types
@@ -20,6 +20,11 @@ export type addCourseAction = {
   type: typeof ADD_COURSE;
   link: string;
   callback?: () => void;
+};
+
+export type fetchCoursesAction = {
+  type: typeof FETCH_COURSES;
+  query?: string;
 };
 
 export type saveCourseAction = {
@@ -45,7 +50,7 @@ export type removeCourseAction = {
 
 export type saveCoursesAction = {
   type: typeof SAVE_COURSES;
-  payload: ILightCourse[];
+  payload: PageType;
 };
 
 export type fetchLessonAction = {
@@ -65,8 +70,9 @@ export const addCourse = (link: string, callback?: () => void): addCourseAction 
   callback,
 });
 
-export const fetchAllCourses = (): Action<typeof FETCH_COURSES> => ({
+export const fetchAllCourses = (query?: string): fetchCoursesAction => ({
   type: FETCH_COURSES,
+  query,
 });
 
 export const fetchCourse = (id: string): Action<typeof FETCH_ONE_COURSE> & { id: string } => ({
@@ -94,7 +100,7 @@ export const removeCourse = (id: string, cb: () => void): removeCourseAction => 
   cb,
 });
 
-export const saveAllCourses = (payload: ILightCourse[]): saveCoursesAction => ({
+export const saveAllCourses = (payload: PageType): saveCoursesAction => ({
   type: SAVE_COURSES,
   payload,
 });

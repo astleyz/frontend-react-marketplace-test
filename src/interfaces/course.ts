@@ -4,6 +4,11 @@ export type ILightCourse = {
   fullLength: string;
 } & Pick<IFullCourse, 'id' | 'title' | 'subTitle' | 'img' | 'authorNames'>;
 
+export type PageType = {
+  courses: ILightCourse[];
+  count: number;
+};
+
 export interface IFullCourse {
   readonly id: string;
   readonly ownerId: {

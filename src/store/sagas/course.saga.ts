@@ -1,6 +1,6 @@
 import { put } from 'redux-saga/effects';
 import { api } from '../../api';
-import { ILightCourse, IFullCourse } from '../../interfaces/course';
+import { PageType, IFullCourse } from '../../interfaces/course';
 import { makeRequestWithSpinner } from './spinnerRequest.saga';
 import {
   addCourseAction,
@@ -12,6 +12,7 @@ import {
   fetchCourse,
   clearCourseInStore,
   setFetchingError,
+  fetchCoursesAction,
 } from '../actions';
 import {
   startFetching,
@@ -37,14 +38,15 @@ export function* addCourseWorker({ link, callback }: addCourseAction): Generator
   } catch (e) {}
 }
 
-export function* fetchAllCoursesWorker(): Generator {
+export function* fetchAllCoursesWorker({ query }: fetchCoursesAction): Generator {
   const options = {
     fetcher: api.course.getAllCourses,
+    data: query,
     fillFetched: saveAllCourses,
   };
 
   try {
-    yield makeRequestWithSpinner<ILightCourse[]>(options);
+    yield makeRequestWithSpinner<PageType>(options);
   } catch (e) {}
 }
 

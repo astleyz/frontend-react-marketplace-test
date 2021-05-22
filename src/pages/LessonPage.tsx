@@ -13,8 +13,8 @@ import { getLesson, getSpinneredError } from '../store/selectors';
 import { Skeleton } from '@material-ui/lab';
 
 const LessonPage: FC<RouteComponentProps> = ({ location }) => {
-  const sectionNum = location.search.match(/(?<=section=)\d/g);
-  const lessonNum = location.search.match(/(?<=lesson=)\d/g);
+  const sectionNum = location.search.match(/(?<=section=)\d+/g);
+  const lessonNum = location.search.match(/(?<=lesson=)\d+/g);
 
   const dispatch = useDispatch();
   const lesson = useSelector(getLesson);
@@ -88,7 +88,7 @@ const LessonPage: FC<RouteComponentProps> = ({ location }) => {
         </div>
         <div className="container" style={{ marginTop: '3rem' }}>
           <h1 style={{ fontSize: '19px', marginBottom: '30px' }}>
-            Комментарии {lesson.comments.length || ''}
+            Комментарии {lesson.comments.length}
           </h1>
           <CommentInput />
           {lesson.comments

@@ -55,11 +55,15 @@
       }
 
       &:hover {
+        position: relative;
+        content: 'NEW';
+
         img {
           display: none;
         }
 
         .upload {
+          z-index: 99999999;
           background-color: gray;
           border-radius: 50%;
           display: flex;

@@ -1,12 +1,13 @@
 import { AxiosError } from 'axios';
 import { Component, ReactNode } from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 import NotFound from '../components/NotFound/NotFound';
 
-interface Props {
+type Props = {
   children: ReactNode;
-}
+} & RouteComponentProps;
 
-interface State {
+type State = {
   hasError: boolean;
   e: AxiosError | null;
 }
@@ -19,6 +20,12 @@ class BoundaryError extends Component<Props, State> {
 
   static getDerivedStateFromError(e: AxiosError): State {
     return { hasError: true, e };
+  }
+
+  componentDidUpdate(prevProps: Readonly<Props>) {
+    if (this.state.hasError && prevProps.match.url !== this.props.match.url) {
+      this.setState({ hasError: false, e: null });
+    }
   }
 
   render() {

@@ -19,7 +19,7 @@ const BoundaryRoute: FC<BoundaryRouteProps> = props => {
       <Suspense fallback={<div>Подождите...</div>}>
         <Route
           render={p => (
-            <BoundaryError>
+            <BoundaryError {...p}>
               <Component {...p} />
             </BoundaryError>
           )}
@@ -31,7 +31,7 @@ const BoundaryRoute: FC<BoundaryRouteProps> = props => {
   return (
     <Route
       render={p => (
-        <BoundaryError>
+        <BoundaryError {...p}>
           <Component {...p} />
         </BoundaryError>
       )}

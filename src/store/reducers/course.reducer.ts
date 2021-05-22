@@ -14,12 +14,14 @@ type CourseState = {
   course: IFullCourse | null;
   lesson: ILesson | null;
   fetchedCourses: ILightCourse[] | null;
+  fullCount: number;
 };
 
 const initialState: CourseState = {
   course: null,
   lesson: null,
   fetchedCourses: null,
+  fullCount: 0,
 };
 
 export const courseReducer: Reducer<CourseState, CourseActionTypes> = (
@@ -32,9 +34,9 @@ export const courseReducer: Reducer<CourseState, CourseActionTypes> = (
     case CLEAR_ONE_COURSE:
       return { ...state, course: null };
     case SAVE_COURSES:
-      return { ...state, fetchedCourses: action.payload };
+      return { ...state, fetchedCourses: action.payload.courses, fullCount: action.payload.count };
     case CLEAR_FETCHED_COURSES:
-      return { ...state, fetchedCourses: [] };
+      return { ...state, fetchedCourses: null };
     case SET_LESSON:
       return { ...state, lesson: action.payload };
     case CLEAR_LESSON:
