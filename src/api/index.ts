@@ -18,6 +18,7 @@ export type APIFetchDataType = {
     changeFullName: (
       name: Pick<IUserData, 'name'>
     ) => FetchDataType<Pick<IUserData, 'name' | 'img'>>;
+    changeAvatar: (data: FormData) => FetchDataType<null>;
   };
   course: {
     addCourseToUser: (link: string) => FetchDataType<null>;
@@ -42,6 +43,8 @@ export const api: APIFetchDataType = Object.freeze({
   user: {
     getFullName: () => instance.get('/user?name=true&img=true'),
     changeFullName: (name: Pick<IUserData, 'name'>) => instance.put('/user', name),
+    changeAvatar: (data: FormData) =>
+      instance.patch('/user/avatar', data, { headers: { 'content-type': 'multipart/form-data' } }),
   },
   course: {
     addCourseToUser: (link: string) => instance.post('/courses/create', link),

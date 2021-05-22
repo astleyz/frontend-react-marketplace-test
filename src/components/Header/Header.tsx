@@ -1,22 +1,20 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Tooltip, Zoom, Button, Dialog, DialogActions, DialogContent } from '@material-ui/core';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { useTheme } from '@material-ui/core/styles';
-import { Form, Formik, Field } from 'formik';
+import { Tooltip, Zoom } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { AddAPhoto, ExitToApp } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 import cx from 'classnames';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import styles from './Header.module.scss';
 import Authorization from '../Auth/Authorization';
 import Registration from '../Auth/Registration';
+import Search from '../Search/Search';
+import EditName from './EditName';
 import useHttp from '../../hooks/useHttp';
 import { api } from '../../api';
 import { getAuthStatus, getUserAccountData } from '../../store/selectors';
 import { IUserData } from '../../store/reducers/user.reducer';
-import { saveUserFullName, clearToken, setSnackbar } from '../../store/actions';
-import Search from '../Search/Search';
+import { saveUserFullName, clearUser, clearToken, setSnackbar } from '../../store/actions';
 
 const useStyles = makeStyles(() => ({
   tooltip: {
@@ -66,6 +64,17 @@ const Header: FC = () => {
       }
     }
   };
+  const handleAvatar = async (evt: React.ChangeEvent<HTMLInputElement>) => {
+    try {
+      const data = new FormData();
+      data.append('avatar', evt.target.files![0]);
+      await api.user.changeAvatar(data);
+      dispatch(clearUser());
+    } catch (e) {
+      const errText = e.response?.data?.message || e.message || 'Ошибка. Попробуйте еще раз';
+      dispatch(setSnackbar(true, 'error', errText));
+    }
+  };
 
   return (
     <header className="header">
@@ -85,6 +94,10 @@ const Header: FC = () => {
                     onError={(e: any) => (e.target.style.display = 'none')}
                     onLoad={() => setImgLoaded(true)}
                   />
+                  <label htmlFor="avatar" className={styles.upload}>
+                    <AddAPhoto fontSize="large" />
+                  </label>
+                  <input type="file" id="avatar" name="avatar" onChange={handleAvatar} />
                 </div>
                 <Tooltip
                   title="Нажми чтобы изменить имя"
@@ -100,7 +113,7 @@ const Header: FC = () => {
               </li>
               <li className={styles.exit}>
                 <a onClick={handleLogout}>
-                  <ExitToAppIcon /> <span className={styles.exitText}>Выйти</span>
+                  <ExitToApp /> <span className={styles.exitText}>Выйти</span>
                 </a>
               </li>
             </ul>
@@ -121,48 +134,6 @@ const Header: FC = () => {
         </div>
       </nav>
     </header>
-  );
-};
-
-type EditNameProps = {
-  user: IUserData;
-  isOpen: boolean;
-  onClose: () => void;
-};
-
-const EditName: FC<EditNameProps> = ({ user, isOpen, onClose }) => {
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
-  const { request, data, dispatch, error } = useHttp<Pick<IUserData, 'name' | 'img'>>();
-
-  const handleChangeName = (values: Pick<IUserData, 'name'>) => {
-    request(() => api.user.changeFullName(values));
-    onClose();
-  };
-
-  useEffect(() => {
-    if (data) dispatch(saveUserFullName(data));
-    if (error) dispatch(setSnackbar(true, 'error', 'Не удалось изменить имя'));
-  }, [dispatch, data, error]);
-
-  return (
-    <Dialog open={isOpen} onClose={onClose} fullScreen={fullScreen}>
-      <Formik initialValues={{ name: user.name }} onSubmit={handleChangeName}>
-        <Form>
-          <DialogContent>
-            <Field name="name" className="materialize-textarea" spellCheck="false" autoFocus />
-          </DialogContent>
-          <DialogActions className={styles.buttons}>
-            <Button onClick={onClose} color="primary">
-              Отмена
-            </Button>
-            <Button color="primary" type="submit">
-              Сохранить
-            </Button>
-          </DialogActions>
-        </Form>
-      </Formik>
-    </Dialog>
   );
 };
 

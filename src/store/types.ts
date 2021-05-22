@@ -6,6 +6,7 @@ export const SET_TOKEN = 'SET_TOKEN';
 export const CLEAR_TOKEN = 'CLEAR_TOKEN';
 
 export const SET_FULL_NAME = 'SET_FULL_NAME';
+export const CLEAR_USER = 'CLEAR_USER';
 
 export const ADD_COURSE = 'ADD_COURSE';
 export const FETCH_COURSES = 'FETCH_COURSES';

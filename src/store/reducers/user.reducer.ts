@@ -1,5 +1,5 @@
 import { Reducer } from 'redux';
-import { SET_FULL_NAME, CLEAR_TOKEN } from '../types';
+import { SET_FULL_NAME, CLEAR_USER, CLEAR_TOKEN } from '../types';
 import { UserActionTypes } from '../../interfaces/actions';
 import { isNotNull } from '../../interfaces/guard';
 
@@ -18,6 +18,7 @@ export const userReducer: Reducer<IUserData | null, UserActionTypes> = (
     case SET_FULL_NAME:
       if (isNotNull(state)) return { ...state, name: action.data.name, img: action.data.img };
       return { name: action.data.name, img: action.data.img };
+    case CLEAR_USER:
     case CLEAR_TOKEN:
       return null;
     default:

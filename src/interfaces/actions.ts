@@ -11,7 +11,10 @@ export type ActionTypes =
   | auth.setTokenAction
   | auth.clearTokenAction;
 
-export type UserActionTypes = user.saveUserFullNameAction | auth.clearTokenAction;
+export type UserActionTypes =
+  | user.saveUserFullNameAction
+  | ReturnType<typeof user.clearUser>
+  | auth.clearTokenAction;
 
 export type CourseActionTypes =
   | course.saveCourseAction
